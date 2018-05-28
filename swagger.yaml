@@ -1,120 +1,2490 @@
-swagger: '2.0'
-info:
-  version: '1.0'
-  title: "shawn"
-  description: Polls is a simple API allowing consumers to view polls and vote in them.
-  license:
-    name: MIT
-    url: https://github.com/apiaryio/polls-api/blob/master/LICENSE
-host: polls.apiblueprint.org
-basePath: /
-schemes:
-- http
-consumes:
-- application/json
-produces:
-- application/json
-paths:
-  /questions:
-    x-summary: Questions Collection
-    get:
-      summary: List All Questions
-      responses:
-        200:
-          description: Successful Response
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/Question'
-          examples:
-            application/json:
-              - question: Favourite programming language?
-                published_at: '2015-08-05T08:40:51.620Z'
-                choices:
-                  - choice: Swift
-                    votes: 2048
-                  - choice: Python
-                    votes: 1024
-                  - choice: Objective-C
-                    votes: 512
-                  - choice: Ruby
-                    votes: 256
-    post:
-      description: >-
-        You may create your own question using this action. It takes a JSON
-        object containing a question and a collection of answers in the
-        form of choices.
-      summary: Create a New Question
-      parameters:
-        - name: body
-          in: body
-          required: true
-          schema:
-            $ref: '#/definitions/QuestionRequest'
-      responses:
-        201:
-          description: ''
-          schema:
-            $ref: '#/definitions/Question'
-          examples:
-            application/json:
-                question: Favourite programming language?
-                published_at: '2015-08-05T08:40:51.620Z'
-                choices:
-                  - choice: Swift
-                    votes: 0
-                  - choice: Python
-                    votes: 0
-                  - choice: Objective-C
-                    votes: 0
-                  - choice: Ruby
-                    votes: 0
-definitions:
-  Question:
-    title: Question
-    type: object
-    properties:
-      question:
-        type: string
-      published_at:
-        type: string
-      choices:
-        type: array
-        items:
-          $ref: '#/definitions/Choice'
-    required:
-      - question
-      - published_at
-      - choices
-  Choice:
-    title: Choice
-    type: object
-    properties:
-      votes:
-        type: integer
-        format: int32
-      choice:
-        type: string
-    required:
-      - votes
-      - choice
-  QuestionRequest:
-    title: Question Request
-    type: object
-    properties:
-      question:
-        type: string
-      choices:
-        type: array
-        items:
-          type: string
-    required:
-      - question
-      - choices
-    example:
-      question: Favourite programming language?
-      choices:
-        - Swift
-        - Python
-        - Objective-C
-        - Ruby
+FORMAT: 1A
+HOST: https://sales-prod.tryemanagecrm.com
+
+# eManage CRM - Sales API
+#About
+
+<p>
+  The <strong>Emanage CRM Sales API</strong> is the conjunction of HTTP-based APIs that allows any website to integrates with <strong>eManageCRM</strong>. The APIs will allow to query campaign's data, such as products and prices, also allow to create new customers, post new orders and submit payments. This documentation describes all end-points available and their functionalities.
+</p>
+
+
+
+#Allowed methods HTTPs requests
+
+<table class="table" >
+
+  <tr>
+
+    <th>Method</th>
+
+    <th>Description</th>
+
+  </tr>
+
+  <tr>
+
+    <td>PUT </td>
+
+    <td>Update resource</td>
+
+  </tr>
+
+  <tr>
+
+    <td>POST </td>
+
+    <td>To create resource</td>
+
+  </tr>
+
+  <tr>
+
+    <td>GET </td>
+
+    <td>Get a resource or list of resources</td>
+
+  </tr>
+
+  <tr>
+
+    <td>DELETE </td>
+
+    <td>Remove resource</td>
+
+  </tr>
+
+</table>
+
+
+
+  #HTTP responses
+
+<table class="table" >
+
+  <tr>
+
+    <th>Response code</th>
+
+    <th>Description</th>
+
+  </tr>
+
+  <tr>
+
+    <td><strong>200</strong> </td>
+
+    <td><code>OK</code> The request was successful (some API calls may return 201 instead).</td>
+
+  </tr>
+
+  <tr>
+
+    <td><strong>201</strong></td>
+
+    <td><code>Created</code> The request was successful and a resource was created. </td>
+
+  </tr>
+
+  <tr>
+
+    <td><strong>204</strong></td>
+
+    <td><code>No Content</code> The request was successful but there is no representation to return (i.e. the response is empty).</td>
+
+  </tr>
+
+  <tr>
+
+    <td><strong>400</strong></td>
+
+    <td><code>Bad Request</code> The request could not be understood or was missing required parameters.</td>
+
+  </tr>
+
+  <tr>
+
+    <td><strong>401</strong></td>
+
+    <td><code>Unauthorized</code> Authentication failed or user doesn't have permissions for requested operation.</td>
+
+  </tr>
+
+  <tr>
+
+    <td><strong>403</strong></td>
+
+    <td><code>Forbidden</code> Access denied.</td>
+
+  </tr>
+
+  <tr>
+
+    <td><strong>404</strong></td>
+
+    <td><code>Not Found</code> The requested resource could not be found.</td>
+
+  </tr>
+
+  <tr>
+
+    <td><strong>405</strong></td>
+
+    <td><code>Method Not Allowed</code> Requested method is not supported for resource.</td>
+
+  </tr>
+
+</table>
+
+
+
+    
+
+#Quickstart
+
+
+
+<hr/>
+
+
+
+  <strong>Some important things to have in mind before starting any integration!<br> Before starting any integration, please nake sure to have: </strong>
+
+  
+
+  <ul>
+
+    <li><strong>X_CID: </strong>That will be your client key. As soon as a new client onboard in eManageCRM, they will receive this key with their instance package. That is required to be added in the header of every call in the <strong>Sales API</strong>.</li>
+
+    <li><strong>Campaign WebKey: </strong>For each new campaign, a new webkey will be generated. You will constantly see that information being requested in our APIs. That will be the campaign key used to connect the offer website to our CRM.<br><img src='https://s3.amazonaws.com/emanage-analytics/webkey.png' alt='api_browser_schema'  /></li>
+
+  </ul>
+
+  
+
+  
+
+  In order to have <strong>Sales API</strong> working adequately, the campaign being used must be configured with status <strong>'Active with Traffic'</strong>. 
+
+  Considering that you already have that, please follow bellow the steps that are mandatory:
+
+  <ul>
+
+    <li><strong>Get the customer location: </strong>This step <strong>is not</strong> mandatory, however it allows you to get the customer geolocation. In case that you are setting the prices based on their location, it is <strong>very important</strong> to use this GET method. In case that there is no relevance, you could simply ignore this method, and consider the prices from the location desired for your offer.</li>
+
+    <li><strong>Get countries set up in the campaign: </strong>That is a important step from our flow. This API GET method will bring you a list with all countries configured for that specific campaign with all the particularities from the currency (sign, name and code).</li>
+
+    <li><strong>Place a new order: </strong>That is the main API call. Once you gatter all information, you will use the Place Order method to input all that data and process the payment from that order.</li>
+
+  </ul>
+
+  
+
+<table>
+
+<tr>
+
+<td align='center'>
+
+<map name="api_schema_map"> 
+
+<area href="https://www.tryemanage.com/docs/api/index.html#/reference/customers/customer-location" shape=poly coords="215,35, 365,35, 365,65, 215,65">
+
+<area href="https://www.tryemanage.com/docs/api/index.html#/reference/products/prices" shape=poly coords="120,175, 292,175, 292,196, 120,196">
+
+<area href="https://www.tryemanage.com/docs/api/index.html#/reference/campaigns/countries-list" shape=poly coords="120,196, 292,196, 292,224, 120,224">
+
+<area href="https://www.tryemanage.com/docs/api/index.html#/reference/coupons/apply-coupon" shape=poly coords="120,224, 292,224, 292,246, 120,246">
+
+<area href="https://www.tryemanage.com/docs/api/index.html#/reference/orders/place-order" shape=poly coords="157,311, 321,311, 321,363, 157,363">
+
+<area href="https://www.tryemanage.com/docs/api/index.html#/reference/products/prices" shape=poly coords="124,438, 294,438, 294,463, 124,463">
+
+<area href="https://www.tryemanage.com/docs/api/index.html#/reference/coupons/apply-coupon" shape=poly coords=" 124,463, 294,463, 294,493, 124,493">
+
+<area href="https://www.tryemanage.com/docs/api/index.html#/reference/orders/place-order" shape=poly coords="159,572, 318,572, 318,620, 159,620">
+
+<area href="https://www.tryemanage.com/docs/api/index.html#/reference/customers/create-or-update" shape=poly coords="214,706, 370,706, 370,740, 214,740">
+
+</map>
+
+<center>
+
+<img src="https://s3.amazonaws.com/emanage-analytics/docs/schema2_500.png" alt="CRM api schema" width=500 height=788 usemap="#api_schema_map" style="margin:0 auto">
+
+</center>
+
+</td>
+
+</tr>
+
+</table>
+
+# Group Campaigns
+
+## Api Campaigns Settings By Webkey [/api/campaigns/{webkey}/settings]
+
++ Parameters
+    + webkey (string, required)
+
+
+### CampaignsGetCampaignSettings [GET]
+/GET campaigns/{webkey}/settings
+
++ Response 200 (application/json)
+
+        OK
+
+    + Attributes (CampaignSettingsViewModel)
+
+
+
+## Api Campaigns Customfields By Webkey [/api/campaigns/{webkey}/customfields]
+
++ Parameters
+    + webkey (string, required)
+
+
+### CampaignsGetCustomFields [GET]
+
++ Response 200 (application/json)
+
+        OK
+
+    + Attributes (CampaignCustomFieldViewModel)
+
+
+
+## Api Campaigns Countries By Webkey [/api/campaigns/{webkey}/countries]
+
++ Parameters
+    + webkey (string, required)
+
+
+### CampaignsGetCountries [GET]
+
++ Response 200 (application/json)
+
+        OK
+
+    + Attributes (CampaignCountryViewModel)
+
+
+
+## Api Campaigns Countrystates By Webkey [/api/campaigns/{webkey}/countrystates{?countryCode,languageCode}]
+
++ Parameters
+    + webkey (string, required)
+
+
+### CampaignsGetCountryStates [GET]
++ Parameters
+    + countryCode (string, optional)
+
+    + languageCode (string, optional)
+
+
++ Response 200 (application/json)
+
+        OK
+
+    + Attributes (CampaignCountryStateViewModel)
+
+
+
+## Api Campaigns Affiliate By Webkey [/api/campaigns/{webkey}/affiliate]
+
++ Parameters
+    + webkey (string, required)
+
+
+### CampaignsPost [POST]
+
++ Request (application/json)
+    + Attributes (CampaignAffiliateSaveViewModel)
+
+
++ Response 200 
+
+        OK
+
+    + Attributes (object)
+
+
+
+## Api Campaigns Upsells By Webkey [/api/campaigns/{webkey}/upsells]
+
++ Parameters
+    + webkey (string, required)
+
+
+### CampaignsGetUpsells [GET]
+
++ Response 200 (application/json)
+
+        OK
+
+    + Attributes (CampaignUpsellItemViewModel)
+
+
+
+
+# Group Coupons
+
+## Api Campaigns Coupons By Webkey [/api/campaigns/{webkey}/coupons/{couponCode}]
+
++ Parameters
+    + webkey (string, required)
+
+    + couponCode (string, required)
+
+
+### CouponsGetCoupon [GET]
++ Attributes
+    + currencyCode (string, required)
+
+
++ Response 200 (application/json)
+
+        OK
+
+    + Attributes (CampaignCouponViewModel)
+
+
+
+## Api Campaigns Coupons Calculate [/api/campaigns/{webkey}/coupons/{couponCode}/calculate{?currencyCode,productPrice,shippingPrice}]
+
++ Parameters
+    + webkey (string, required)
+
+    + couponCode (string, required)
+
+
+### CouponsGetCouponCalculated [GET]
++ Parameters
+    + currencyCode (string, required)
+
+    + productPrice (number, required)
+
+    + shippingPrice (number, required)
+
+
++ Response 200 (application/json)
+
+        OK
+
+    + Attributes (CampaignCouponCalculatedViewModel)
+
+
+
+
+# Group Customers
+
+## Api Customers Export By Datini [/api/customers/export/{datini}/{datend}]
+
++ Parameters
+    + datini (string, required)
+
+        {DATETIME}
+
+    + datend (string, required)
+
+        {DATETIME}
+
+
+### CustomersGet [GET]
+
++ Response 200 (application/json)
+
+        OK
+
+    + Attributes (ExportCustomerViewModel)
+
+
+
+## Api Customers [/api/customers{?email}]
+
+### CustomersGet [GET]
++ Parameters
+    + email (string, required)
+
+
++ Response 200 (application/json)
+
+        OK
+
+    + Attributes (CustomerViewModel)
+
+
+
+## Api Customers By Webkey [/api/customers/{webkey}{?email}]
+
++ Parameters
+    + webkey (string, required)
+
+
+### CustomersPut [PUT]
++ Parameters
+    + email (string, required)
+
+
++ Request (application/json)
+    + Attributes (CustomerAddressOrderSaveViewModel)
+
+
++ Response 200 (application/json)
+
+        OK
+
+    + Attributes (CustomerReturnViewModel)
+
+
+
+## Api Customers By Webkey [/api/customers/{webkey}]
+
++ Parameters
+    + webkey (string, required)
+
+
+### CustomersPost [POST]
+
++ Request (application/json)
+    + Attributes (CustomerSaveViewModel)
+
+
++ Response 200 (application/json)
+
+        OK
+
+    + Attributes (CustomerViewModel)
+
+
+
+## Api Customers Shippingaddress [/api/customers/shippingaddress]
+
+### CustomersPostUpdateShippingAddress [POST]
+
++ Request (application/json)
+    + Attributes (CustomerAddressUpdateViewModel)
+
+
++ Response 200 (application/json)
+
+        OK
+
+    + Attributes (CustomerUpdateReturnViewModel)
+
+
+
+## Api Campaigns Customers Location [/api/campaigns/{webkey}/customers/location]
+
++ Parameters
+    + webkey (string, required)
+
+
+### CustomersGetLocalization [GET]
+
++ Response 200 (application/json)
+
+        OK
+
+    + Attributes (CustomerLocationViewModel)
+
+
+
+## Api Customer Signin [/api/customer/signin]
+
+### CustomersSignIn [POST]
+
++ Request (application/json)
+    + Attributes (CustomerPwd)
+
+
++ Response 200 
+
+        OK
+
+    + Attributes (object)
+
+
+
+## Api Customer Upd Pwd [/api/customer/upd-pwd]
+
+### CustomersUpdatePassword [PUT]
+
++ Request (application/json)
+    + Attributes (CustomerPwd)
+
+
++ Response 200 
+
+        OK
+
+    + Attributes (object)
+
+
+
+## Api Customer Billing [/api/customer/billing]
+
+### CustomersAddBillingData [POST]
+
++ Request (application/json)
+    + Attributes (CustomerBillingData)
+
+
++ Response 200 
+
+        OK
+
+    + Attributes (object)
+
+
+
+
+# Group Files
+
+## Api Files Download [/api/files/download]
+
+### FilesGet [GET]
++ Attributes
+    + key (string, required)
+
+    + id (number, required)
+
+
++ Response 200 
+
+        OK
+
+    + Attributes (object)
+
+
+
+
+# Group FraudPrevention
+
+## Api Fraudprevention [/api/fraudprevention]
+
+### FraudPreventionPost [POST]
+
++ Request (application/json)
+    + Attributes (FraudAnalysisTransaction)
+
+
++ Response 200 (application/json)
+
+        OK
+
+    + Attributes (FraudAnalysisResponse)
+
+
+
+
+# Group Index
+
+## Unnammed Endpoint [/]
+
+### IndexGet [GET]
+
++ Response 200 
+
+        OK
+
+    + Attributes (object)
+
+
+
+
+# Group Orders
+
+## Api Orders By Webkey [/api/orders/{webkey}]
+
++ Parameters
+    + webkey (string, required)
+
+
+### OrdersPut [PUT]
++ Attributes
+    + trackingNumber (string, required)
+
+    + isTest (boolean, optional)
+
+
++ Request (application/json)
+    + Attributes (PlaceOrderUpdateSaveViewModel)
+
+
++ Response 200 (application/json)
+
+        OK
+
+    + Attributes (PlaceOrderUpdateReturnViewModel)
+
+
+
+## Api Orders By Webkey [/api/orders/{webkey}{?behaviorId,useShippingCountry}]
+
++ Parameters
+    + webkey (string, required)
+
+
+### OrdersPost [POST]
++ Parameters
+    + behaviorId (number, optional)
+
+    + useShippingCountry (boolean, optional)
+
+
++ Request (application/json)
+    + Attributes (PlaceOrderSaveViewModel)
+
+
++ Response 200 (application/json)
+
+        OK
+
+    + Attributes (PlaceOrderSaveResponseViewModel)
+
+
+
+## Api Orders Upsell By OrderNumber [/api/orders/upsell/{orderNumber}]
+
++ Parameters
+    + orderNumber (string, required)
+
+
+### OrdersPost [POST]
+
++ Response 200 (application/json)
+
+        OK
+
+    + Attributes (PlaceOrderUpsellReturnViewModel)
+
+
+
+## Api Orders By OrderNumber [/api/orders/{orderNumber}]
+
++ Parameters
+    + orderNumber (string, required)
+
+
+### OrdersPostPreAuth [POST]
+
++ Response 200 (application/json)
+
+        OK
+
+    + Attributes (PlaceOrderConfirmationReturnViewModel)
+
+
+
+## Api Orders Boleto By OrderNumber [/api/orders/boleto/{orderNumber}]
+
++ Parameters
+    + orderNumber (string, required)
+
+
+### OrdersPostNewUnifiedBoleto [POST]
+
++ Response 200 (application/json)
+
+        OK
+
+    + Attributes (PlaceOrderBoletoReturnViewModel)
+
+
+
+## Api Orders Mid By Webkey [/api/orders/mid/{webkey}]
+
++ Parameters
+    + webkey (string, required)
+
+
+### OrdersPostGetNextMid [POST]
+
++ Request (application/json)
+    + Attributes (PlaceOrderMidViewModel)
+
+
++ Response 200 (application/json)
+
+        OK
+
+    + Attributes (PlaceOrderMidReturnViewModel)
+
+
+
+## Api Orders Latestorders By Webkey [/api/orders/latestorders/{webkey}]
+
++ Parameters
+    + webkey (string, required)
+
+
+### OrdersGetLatestOrdersCustomerInfo [GET]
+
++ Response 200 (application/json)
+
+        OK
+
+    + Attributes (LatestOrdersViewModelModel)
+
+
+
+## Api Orders Relatedorders By OrderNumber [/api/orders/{orderNumber}/relatedorders]
+
++ Parameters
+    + orderNumber (string, required)
+
+
+### OrdersGetRelatedOrders [GET]
+
++ Response 200 (application/json)
+
+        OK
+
+    + Attributes (RelatedOrdersModel)
+
+
+
+## Api Orders Customerorders By Webkey [/api/orders/{webkey}/customerorders{?email}]
+
++ Parameters
+    + webkey (string, required)
+
+
+### OrdersGetCustomerOrders [GET]
++ Parameters
+    + email (string, required)
+
+
++ Response 200 (application/json)
+
+        OK
+
+    + Attributes (CustomerOrdersModel)
+
+
+
+
+# Group Payments
+
+## Api Payments Transactions By OrderNumber [/api/payments/transactions/{orderNumber}]
+
++ Parameters
+    + orderNumber (string, required)
+
+
+### PaymentsGet [GET]
+
++ Response 200 
+
+        OK
+
+    + Attributes (object)
+
+
+
+
+# Group Products
+
+## Api Campaigns Products Prices By Webkey [/api/campaigns/{webkey}/products/prices]
+
++ Parameters
+    + webkey (string, required)
+
+
+### ProductsGetCampaignProductPrices [GET]
+
++ Response 200 (application/json)
+
+        OK
+
+    + Attributes (CampaignProductSimpleListViewModel)
+
+
+
+## Api Campaigns Products Prices By Webkey [/api/campaigns/{webkey}/products/prices/{countryCode}]
+
++ Parameters
+    + webkey (string, required)
+
+    + countryCode (string, required)
+
+
+### ProductsGetCampaignProductPricesByCountry [GET]
+
++ Response 200 (application/json)
+
+        OK
+
+    + Attributes (CampaignProductSimpleListViewModel)
+
+
+
+## Api Campaigns Products List By Webkey [/api/campaigns/{webkey}/products/list/{countryCode}]
+
++ Parameters
+    + webkey (string, required)
+
+    + countryCode (string, required)
+
+
+### ProductsGetCampaignProductsByCountry [GET]
+
++ Response 200 (application/json)
+
+        OK
+
+    + Attributes (CampaignProductSimpleListViewModel)
+
+
+
+## Api Campaigns Products Miniupsells [/api/campaigns/{webkey}/products/{productId}/miniupsells]
+
++ Parameters
+    + webkey (string, required)
+
+    + productId (number, required)
+
+        {INT}
+
+
+### ProductsGetCampaignMiniUpsellsByCountry [GET]
+
++ Response 200 (application/json)
+
+        OK
+
+    + Attributes (CampaignProductListViewModel)
+
+
+
+## Api Campaigns Products Miniupsells CountryCode [/api/campaigns/{webkey}/products/{productId}/miniupsells/{countryCode}]
+
++ Parameters
+    + webkey (string, required)
+
+    + productId (number, required)
+
+        {INT}
+
+    + countryCode (string, required)
+
+
+### ProductsGetCampaignMiniUpsells [GET]
+
++ Response 200 (application/json)
+
+        OK
+
+    + Attributes (CampaignProductSimpleListViewModel)
+
+
+
+## Api Campaigns Products CountryCode [/api/campaigns/{webkey}/products/{productId}/{countryCode}]
+
++ Parameters
+    + webkey (string, required)
+
+    + productId (number, required)
+
+        {INT}
+
+    + countryCode (string, required)
+
+
+### ProductsGetCampaignProductById [GET]
+
++ Response 200 (application/json)
+
+        OK
+
+    + Attributes (CampaignProductViewModel)
+
+
+
+## Api Campaigns Shippings By Webkey [/api/campaigns/{webkey}/shippings/{productId}{?countryCode,isMiniUpsell}]
+
++ Parameters
+    + webkey (string, required)
+
+    + productId (number, required)
+
+        {INT}
+
+
+### ProductsGetCampaignShippings [GET]
++ Parameters
+    + countryCode (string, optional)
+
+    + isMiniUpsell (boolean, optional)
+
+
++ Response 200 (application/json)
+
+        OK
+
+    + Attributes (CampaignProductShippingViewModel)
+
+
+
+
+# Group ShoppingCart
+
+## Api Shoppingcart New By Webkey [/api/shoppingcart/{webkey}/new]
+
++ Parameters
+    + webkey (string, required)
+
+
+### ShoppingCartCreateAsync [POST]
+
++ Request (application/json)
+    + Attributes (ShoppingCartCreateViewModel)
+
+
++ Response 200 
+
+        OK
+
+    + Attributes (string)
+
+
+
+## Api Shoppingcart By Webkey [/api/shoppingcart/{webkey}{?sessionId}]
+
++ Parameters
+    + webkey (string, required)
+
+
+### ShoppingCartGetShoppingCart [GET]
++ Parameters
+    + sessionId (string, required)
+
+
++ Response 200 (application/json)
+
+        OK
+
+    + Attributes (ShoppingCartPublicViewModel)
+
+
+
+## Api Shoppingcart Checkout By Webkey [/api/shoppingcart/{webkey}/checkout]
+
++ Parameters
+    + webkey (string, required)
+
+
+### ShoppingCartCheckoutAsync [POST]
+
++ Request (application/json)
+    + Attributes (CheckoutRequest)
+
+
++ Response 200 (application/json)
+
+        OK
+
+    + Attributes (CheckoutResponse)
+
+
+
+## Api Shoppingcart Confirmpayment [/api/shoppingcart/{webkey}/confirmpayment{?trackingNumber,paymentProvider}]
+
++ Parameters
+    + webkey (string, required)
+
+
+### ShoppingCartConfirmPaymentAsync [POST]
++ Parameters
+    + trackingNumber (string, required)
+
+    + paymentProvider (number, required)
+
+
++ Response 200 (application/json)
+
+        OK
+
+    + Attributes (ConfirmPaymentResponse)
+
+
+
+## Api Shoppingcart Applycoupon By Webkey [/api/shoppingcart/{webkey}/applycoupon{?sessionId,couponCode}]
+
++ Parameters
+    + webkey (string, required)
+
+
+### ShoppingCartApplyCouponAsync [POST]
++ Parameters
+    + sessionId (string, required)
+
+    + couponCode (string, required)
+
+
++ Response 200 (application/json)
+
+        OK
+
+    + Attributes (ShoppingCartPublicViewModel)
+
+
+
+## Api Shoppingcart Customers New By Webkey [/api/shoppingcart/{webkey}/customers/new{?sessionId}]
+
++ Parameters
+    + webkey (string, required)
+
+
+### ShoppingCartCreateCustomerAccountAsync [POST]
++ Parameters
+    + sessionId (string, required)
+
+
++ Request (application/json)
+    + Attributes (CustomerSaveViewModel)
+
+
++ Response 200 
+
+        OK
+
+    + Attributes (object)
+
+
+
+## Api Shoppingcart Add By Webkey [/api/shoppingcart/{webkey}/add{?sessionId}]
+
++ Parameters
+    + webkey (string, required)
+
+
+### ShoppingCartAddProduct [POST]
++ Parameters
+    + sessionId (string, required)
+
+
++ Request (application/json)
+    + Attributes (ShoppingCartProductCreateViewModel)
+
+
++ Response 200 
+
+        OK
+
+    + Attributes (object)
+
+
+
+## Api Shoppingcart Remove By Webkey [/api/shoppingcart/{webkey}/remove{?sessionId,productId}]
+
++ Parameters
+    + webkey (string, required)
+
+
+### ShoppingCartRemoveProduct [DELETE]
++ Parameters
+    + sessionId (string, required)
+
+    + productId (number, required)
+
+
++ Response 200 
+
+        OK
+
+    + Attributes (object)
+
+
+
+## Api Shoppingcart Update By Webkey [/api/shoppingcart/{webkey}/update{?sessionId,productId,quantity}]
+
++ Parameters
+    + webkey (string, required)
+
+
+### ShoppingCartUpdateQuantity [PUT]
++ Parameters
+    + sessionId (string, required)
+
+    + productId (number, required)
+
+    + quantity (number, required)
+
+
++ Response 200 
+
+        OK
+
+    + Attributes (object)
+
+
+
+## Api Shoppingcart Shippingmethod [/api/shoppingcart/{webkey}/shippingmethod{?sessionId,productId,shippingMethodId,keepProductPrice}]
+
++ Parameters
+    + webkey (string, required)
+
+
+### ShoppingCartSetShippingMethod [PUT]
++ Parameters
+    + sessionId (string, required)
+
+    + productId (number, required)
+
+    + shippingMethodId (number, required)
+
+    + keepProductPrice (boolean, optional)
+
+
++ Response 200 
+
+        OK
+
+    + Attributes (object)
+
+
+
+
+# Data Structures
+
+## PlaceOrderUpdateReturnViewModel (object)
+
+
+### Properties
++ `success` (boolean, optional) 
++ `message` (string, optional) 
++ `address` (PlaceOrderAddressResponseViewModel, optional) 
++ `suggestedAddress` (PlaceOrderSuggestedAddressResponseViewModel, optional) 
++ `isVerifiedAddress` (boolean, optional) 
+
+
+## PlaceOrderAddressResponseViewModel (object)
+
+
+### Properties
++ `firstName` (string, optional) 
++ `lastName` (string, optional) 
++ `middleName` (string, optional) 
++ `email` (string, optional) 
++ `address1` (string, optional) 
++ `address2` (string, optional) 
++ `city` (string, optional) 
++ `zipCode` (string, optional) 
++ `state` (string, optional) 
++ `country` (string, optional) 
+
+
+## PlaceOrderSuggestedAddressResponseViewModel (object)
+
+
+### Properties
++ `address1` (string, optional) 
++ `state` (string, optional) 
++ `city` (string, optional) 
++ `zipCode` (string, optional) 
++ `countryName` (string, optional) 
++ `countryCode` (string, optional) 
+
+
+## CallbackOnpex (object)
+
+
+### Properties
++ `transactionResults` (array[CallbackTransactionResultsOnpex], optional) 
++ `status` (string, optional) 
++ `version` (string, optional) 
++ `message` (string, optional) 
+
+
+## CallbackTransactionResultsOnpex (object)
+
+
+### Properties
++ `txId` (string, optional) 
++ `mcTxId` (string, optional) 
++ `destTxId` (string, optional) 
++ `startDate` (string, optional) 
++ `startStamp` (number, optional) 
++ `endDate` (string, optional) 
++ `endStamp` (number, optional) 
++ `deltaMsec` (number, optional) 
++ `message` (string, optional) 
++ `debitAmount` (number, optional) 
++ `creditAmount` (number, optional) 
++ `currency` (string, optional) 
++ `status` (string, optional) 
+
+
+## CallbackAftership (object)
+
+
+### Properties
++ `event` (string, optional) 
++ `msg` (CallbackMsg, optional) 
++ `ts` (string, optional) 
+
+
+## CallbackMsg (object)
+
+
+### Properties
++ `id` (string, optional) 
++ `custom_fields` (AftershipCustomFields, optional) 
++ `tracking_number` (string, optional) 
++ `title` (string, optional) 
++ `origin_country_iso3` (string, optional) 
++ `destination_country_iso3` (string, optional) 
++ `shipment_package_count` (string, optional) 
++ `active` (string, optional) 
++ `order_id` (string, optional) 
++ `order_id_path` (string, optional) 
++ `customer_name` (string, optional) 
++ `source` (string, optional) 
++ `emails` (array[string], optional) 
++ `tag` (string, optional) 
++ `tracked_count` (string, optional) 
++ `expected_delivery` (string, optional) 
++ `signed_by` (string, optional) 
++ `shipment_type` (string, optional) 
++ `tracking_account_number` (string, optional) 
++ `tracking_postal_code` (string, optional) 
++ `tracking_ship_date` (string, optional) 
++ `created_at` (string, optional) 
++ `updated_at` (string, optional) 
++ `slug` (string, optional) 
++ `unique_token` (string, optional) 
++ `checkpoints` (array[CallbackCheckpoint], optional) 
+
+
+## AftershipCustomFields (object)
+
+
+### Properties
++ `client_prefix` (string, optional) 
+
+
+## CallbackCheckpoint (object)
+
+
+### Properties
++ `country_name` (string, optional) 
++ `country_iso3` (string, optional) 
++ `state` (string, optional) 
++ `city` (string, optional) 
++ `zip` (string, optional) 
++ `message` (string, optional) 
++ `tag` (string, optional) 
++ `created_at` (string, optional) 
++ `checkpoint_time` (string, optional) 
++ `slug` (string, optional) 
+
+
+## CampaignSettingsViewModel (object)
+
+
+### Properties
++ `campaignId` (number, optional) 
++ `campaignName` (string, optional) 
++ `defaultLanguageCode` (string, optional) 
+
+
+## CampaignCustomFieldViewModel (object)
+
+
+### Properties
++ `key` (string, optional) 
++ `value` (string, optional) 
+
+
+## CampaignCountryViewModel (object)
+
+
+### Properties
++ `countryName` (string, optional) 
++ `countryCode` (string, optional) 
++ `currencyCode` (string, optional) 
++ `currencyName` (string, optional) 
++ `currencySign` (string, optional) 
+
+
+## CampaignCountryStateViewModel (object)
+
+
+### Properties
++ `code` (string, optional) 
++ `name` (string, optional) 
+
+
+## CampaignAffiliateSaveViewModel (object)
+
+
+### Properties
++ `firstName` (string, required) 
++ `lastName` (string, required) 
++ `email` (string, required) 
++ `phoneNumber` (string, required) 
++ `skype` (string, optional) 
+
+
+## CampaignUpsellItemViewModel (object)
+
+
+### Properties
++ `id` (number, optional) 
++ `index` (number, optional) 
++ `webKey`: `00000000-0000-0000-0000-000000000000` (string, optional) 
++ `url` (string, optional) 
+
+
+## XElement (object)
+
+
+### Properties
++ `firstAttribute` (XAttribute, optional) 
++ `hasAttributes` (boolean, optional) 
++ `hasElements` (boolean, optional) 
++ `isEmpty` (boolean, optional) 
++ `lastAttribute` (XAttribute, optional) 
++ `name` (object, optional) 
++ `nodeType` (enum[number], optional) 
+    + `0`
+    + `1`
+    + `2`
+    + `3`
+    + `4`
+    + `5`
+    + `6`
+    + `7`
+    + `8`
+    + `9`
+    + `10`
+    + `11`
+    + `12`
+    + `13`
+    + `14`
+    + `15`
+    + `16`
+    + `17`
++ `value` (string, optional) 
++ `firstNode` (XNode, optional) 
++ `lastNode` (XNode, optional) 
++ `nextNode` (XNode, optional) 
++ `previousNode` (XNode, optional) 
++ `baseUri` (string, optional) 
++ `document` (XDocument, optional) 
++ `parent` (XElement, optional) 
+
+
+## XAttribute (object)
+
+
+### Properties
++ `isNamespaceDeclaration` (boolean, optional) 
++ `name` (object, optional) 
++ `nextAttribute` (XAttribute, optional) 
++ `nodeType` (enum[number], optional) 
+    + `0`
+    + `1`
+    + `2`
+    + `3`
+    + `4`
+    + `5`
+    + `6`
+    + `7`
+    + `8`
+    + `9`
+    + `10`
+    + `11`
+    + `12`
+    + `13`
+    + `14`
+    + `15`
+    + `16`
+    + `17`
++ `previousAttribute` (XAttribute, optional) 
++ `value` (string, optional) 
++ `baseUri` (string, optional) 
++ `document` (XDocument, optional) 
++ `parent` (XElement, optional) 
+
+
+## XDocument (object)
+
+
+### Properties
++ `declaration` (XDeclaration, optional) 
++ `documentType` (XDocumentType, optional) 
++ `nodeType` (enum[number], optional) 
+    + `0`
+    + `1`
+    + `2`
+    + `3`
+    + `4`
+    + `5`
+    + `6`
+    + `7`
+    + `8`
+    + `9`
+    + `10`
+    + `11`
+    + `12`
+    + `13`
+    + `14`
+    + `15`
+    + `16`
+    + `17`
++ `root` (XElement, optional) 
++ `firstNode` (XNode, optional) 
++ `lastNode` (XNode, optional) 
++ `nextNode` (XNode, optional) 
++ `previousNode` (XNode, optional) 
++ `baseUri` (string, optional) 
++ `document` (XDocument, optional) 
++ `parent` (XElement, optional) 
+
+
+## XDeclaration (object)
+
+
+### Properties
++ `encoding` (string, optional) 
++ `standalone` (string, optional) 
++ `version` (string, optional) 
+
+
+## XDocumentType (object)
+
+
+### Properties
++ `internalSubset` (string, optional) 
++ `name` (string, optional) 
++ `nodeType` (enum[number], optional) 
+    + `0`
+    + `1`
+    + `2`
+    + `3`
+    + `4`
+    + `5`
+    + `6`
+    + `7`
+    + `8`
+    + `9`
+    + `10`
+    + `11`
+    + `12`
+    + `13`
+    + `14`
+    + `15`
+    + `16`
+    + `17`
++ `publicId` (string, optional) 
++ `systemId` (string, optional) 
++ `nextNode` (XNode, optional) 
++ `previousNode` (XNode, optional) 
++ `baseUri` (string, optional) 
++ `document` (XDocument, optional) 
++ `parent` (XElement, optional) 
+
+
+## XNode (object)
+
+
+### Properties
++ `nextNode` (XNode, optional) 
++ `previousNode` (XNode, optional) 
++ `baseUri` (string, optional) 
++ `document` (XDocument, optional) 
++ `nodeType` (enum[number], optional) 
+    + `0`
+    + `1`
+    + `2`
+    + `3`
+    + `4`
+    + `5`
+    + `6`
+    + `7`
+    + `8`
+    + `9`
+    + `10`
+    + `11`
+    + `12`
+    + `13`
+    + `14`
+    + `15`
+    + `16`
+    + `17`
++ `parent` (XElement, optional) 
+
+
+## CampaignCouponViewModel (object)
+
+
+### Properties
++ `discountBehavior` (string, optional) 
++ `discountType` (string, optional) 
++ `discount` (number, optional) 
++ `formattedDiscount` (string, optional) 
++ `minimalPurchase` (number, optional) 
++ `formattedMinimalPurchase` (string, optional) 
++ `isFreeShipping` (boolean, optional) 
+
+
+## CampaignCouponCalculatedViewModel (object)
+
+
+### Properties
++ `totalDiscountedPrice` (number, optional) 
++ `formattedTotalDiscountedPrice` (string, optional) 
++ `totalDiscountedShippingPrice` (number, optional) 
++ `formattedTotalDiscountedShippingPrice` (string, optional) 
++ `freeShipping` (boolean, optional) 
+
+
+## ExportCustomerViewModel (object)
+
+
+### Properties
++ `firstName` (string, optional) 
++ `middleName` (string, optional) 
++ `lastName` (string, optional) 
++ `email` (string, optional) 
++ `address1` (string, optional) 
++ `address2` (string, optional) 
++ `city` (string, optional) 
++ `zipCode` (string, optional) 
++ `state` (string, optional) 
++ `countryCode` (string, optional) 
++ `countryName` (string, optional) 
++ `phoneNumber` (string, optional) 
++ `ip` (string, optional) 
++ `campaignName` (string, optional) 
+
+
+## CustomerViewModel (object)
+
+
+### Properties
++ `id` (number, optional) 
++ `email` (string, optional) 
++ `customerIdentificationTypeId` (number, optional) 
++ `customerIdentificationValue` (string, optional) 
++ `shippingAddress` (array[AddressViewModel], optional) 
++ `billingAddress` (array[AddressViewModel], optional) 
+
+
+## AddressViewModel (object)
+
+
+### Properties
++ `id` (number, optional) 
++ `firstName` (string, optional) 
++ `middleName` (string, optional) 
++ `lastName` (string, optional) 
++ `address1` (string, optional) 
++ `address2` (string, optional) 
++ `city` (string, optional) 
++ `zipCode` (string, optional) 
++ `state` (string, optional) 
++ `countryCode` (string, optional) 
++ `countryName` (string, optional) 
++ `phoneNumber` (string, optional) 
+
+
+## CustomerAddressOrderSaveViewModel (object)
+
+
+### Properties
++ `orderNumbers` (array[string], required) 
++ `useShippingAddressForBilling` (boolean, required) 
++ `shippingAddress` (CustomerAddressSaveViewModel, required) 
++ `verifiedByCustomer` (boolean, optional) 
++ `customerIdentificationTypeId` (number, optional) 
++ `customerIdentificationValue` (string, optional) 
++ `newCustomerEmail` (string, optional) 
++ `billingAddress` (CustomerAddressSaveViewModel, optional) 
+
+
+## CustomerAddressSaveViewModel (object)
+
+
+### Properties
++ `firstName` (string, required) 
++ `lastName` (string, required) 
++ `countryCode` (string, required) 
++ `middleName` (string, optional) 
++ `address1` (string, optional) 
++ `address2` (string, optional) 
++ `city` (string, optional) 
++ `zipCode` (string, optional) 
++ `state` (string, optional) 
++ `phoneNumber` (string, optional) 
+
+
+## CustomerReturnViewModel (object)
+
+
+### Properties
++ `id` (number, optional) 
++ `email` (string, optional) 
++ `customerIdentificationTypeId` (number, optional) 
++ `customerIdentificationValue` (string, optional) 
++ `isVerifiedAddress` (boolean, optional) 
++ `isVerifiedByCustomer` (boolean, optional) 
++ `shippingAddress` (CustomerReturnAddressViewModel, optional) 
++ `billingAddress` (CustomerReturnAddressViewModel, optional) 
++ `suggestedAddress` (CustomerReturnSuggestedAddressViewModel, optional) 
+
+
+## CustomerReturnAddressViewModel (object)
+
+
+### Properties
++ `id` (number, optional) 
++ `firstName` (string, optional) 
++ `middleName` (string, optional) 
++ `lastName` (string, optional) 
++ `address1` (string, optional) 
++ `address2` (string, optional) 
++ `city` (string, optional) 
++ `zipCode` (string, optional) 
++ `state` (string, optional) 
++ `countryCode` (string, optional) 
++ `countryName` (string, optional) 
++ `phoneNumber` (string, optional) 
++ `isVerified` (boolean, optional) 
+
+
+## CustomerReturnSuggestedAddressViewModel (object)
+
+
+### Properties
++ `address1` (string, optional) 
++ `city` (string, optional) 
++ `zipCode` (string, optional) 
++ `state` (string, optional) 
++ `countryCode` (string, optional) 
++ `countryName` (string, optional) 
+
+
+## CustomerSaveViewModel (object)
+
+
+### Properties
++ `email` (string, required) 
++ `useShippingAddressForBilling` (boolean, required) 
++ `shippingAddress` (CustomerAddressSaveViewModel, required) 
++ `phoneNumber` (string, optional) 
++ `customerIdentificationTypeId` (number, optional) 
++ `customerIdentificationValue` (string, optional) 
++ `billingAddress` (CustomerAddressSaveViewModel, optional) 
++ `analytics` (CustomerAnalyticsViewModel, optional) 
+
+
+## CustomerAnalyticsViewModel (object)
+
+
+### Properties
++ `referringUrl` (string, optional) 
++ `landingUrl` (string, optional) 
++ `browser` (string, optional) 
++ `os` (string, optional) 
++ `screenResolution` (string, optional) 
++ `device` (string, optional) 
+
+
+## CustomerAddressUpdateViewModel (object)
+
+
+### Properties
++ `email` (string, required) 
++ `addressId` (number, required) 
++ `shippingAddress` (CustomerAddressSaveViewModel, required) 
+
+
+## CustomerUpdateReturnViewModel (object)
+
+
+### Properties
++ `shippingAddress` (CustomerReturnAddressViewModel, optional) 
++ `suggestedAddress` (CustomerReturnSuggestedAddressViewModel, optional) 
+
+
+## CustomerLocationViewModel (object)
+
+
+### Properties
++ `countryCode` (string, optional) 
++ `countryName` (string, optional) 
++ `regionCode` (string, optional) 
++ `regionName` (string, optional) 
++ `city` (string, optional) 
++ `zipCode` (string, optional) 
++ `currencyCode` (string, optional) 
+
+
+## CustomerPwd (object)
+
+
+### Properties
++ `webkey`: `00000000-0000-0000-0000-000000000000` (string, optional) 
++ `id` (number, optional) 
++ `email` (string, optional) 
++ `password` (string, optional) 
++ `repeat` (string, optional) 
+
+
+## CustomerBillingData (object)
+
+
+### Properties
++ `customerId` (number, optional) 
++ `orderId` (number, optional) 
++ `countryCode` (string, optional) 
++ `state` (string, optional) 
++ `city` (string, optional) 
++ `address1` (string, optional) 
++ `address2` (string, optional) 
++ `zipCode` (string, optional) 
++ `clientIP` (string, optional) 
++ `email` (string, optional) 
++ `phone` (string, optional) 
++ `cardNumber` (string, optional) 
++ `cardId` (string, optional) 
++ `cardBrand` (string, optional) 
++ `lastDigits` (string, optional) 
++ `holdersName` (string, optional) 
++ `expiryDate` (string, optional) 
++ `cvv` (string, optional) 
++ `createdOn` (string, optional) 
+
+
+## FraudAnalysisTransaction (object)
+
+
+### Properties
++ `campaignId` (number, optional) 
++ `emailAddress` (string, optional) 
++ `ip` (string, optional) 
++ `creditCardCountryCode` (string, optional) 
++ `address` (CustomerAddressViewModel, optional) 
++ `creditCard` (CreditCardViewModel, optional) 
+
+
+## CustomerAddressViewModel (object)
+
+
+### Properties
++ `firstName` (string, required) 
++ `lastName` (string, required) 
++ `address1` (string, required) 
++ `city` (string, required) 
++ `countryCode` (string, required) 
++ `zipCode` (string, required) 
++ `id` (number, optional) 
++ `middleName` (string, optional) 
++ `address2` (string, optional) 
++ `state` (string, optional) 
++ `countryName` (string, optional) 
++ `phoneNumber` (string, optional) 
+
+
+## CreditCardViewModel (object)
+
+
+### Properties
++ `cardNumber` (string, required) 
++ `expirationDate` (string, required) 
++ `cvv` (string, optional) 
++ `reportedCard` (boolean, optional) 
++ `paymentProcessor` (string, optional) 
+
+
+## FraudAnalysisResponse (object)
+
+
+### Properties
++ `isFraud` (boolean, optional) 
++ `detectedFraudRules` (array[string], optional) 
+
+
+## PlaceOrderSaveViewModel (object)
+
+
+### Properties
++ `useShippingAddressForBilling` (boolean, required) 
++ `productId` (number, required) 
++ `payment` (PlaceOrderPaymentSaveViewModel, required) 
++ `couponCode` (string, optional) 
++ `shippingMethodId` (number, optional) 
++ `comment` (string, optional) 
++ `campaignUpsell` (PlaceOrderUpSellSaveViewModel, optional) 
++ `miniUpsell` (PlaceOrderMiniUpSellSaveViewModel, optional) 
++ `customer` (PlaceOrderCustomerSaveViewModel, optional) 
++ `mid` (PlaceOrderMidSaveViewModel, optional) 
++ `shippingAddress` (PlaceOrderAddressSaveViewModel, optional) 
++ `billingAddress` (PlaceOrderAddressSaveViewModel, optional) 
++ `analytics` (PlaceOrderAnalyticsViewModel, optional) 
++ `analyticsV2` (PlaceOrderAnalyticsBase64ViewModel, optional) 
++ `funnelBoxId` (number, optional) 
++ `antiFraud` (PlaceOrderFraudSaveViewModel, optional) 
++ `callCenter` (PlaceOrderCallCenterSaveViewModel, optional) 
+
+
+## PlaceOrderUpSellSaveViewModel (object)
+
+
+### Properties
++ `webKey`: `00000000-0000-0000-0000-000000000000` (string, optional) 
++ `relatedOrderNumber` (string, optional) 
+
+
+## PlaceOrderMiniUpSellSaveViewModel (object)
+
+
+### Properties
++ `productId` (number, optional) 
++ `shippingMethodId` (number, optional) 
+
+
+## PlaceOrderCustomerSaveViewModel (object)
+
+
+### Properties
++ `email` (string, required) 
++ `id` (number, optional) 
++ `customerIdentificationTypeId` (number, optional) 
++ `customerIdentificationValue` (string, optional) 
++ `phoneNumber` (string, optional) 
++ `firstName` (string, optional) 
++ `middleName` (string, optional) 
++ `lastName` (string, optional) 
++ `ip` (string, optional) 
++ `password` (string, optional) 
++ `salt` (string, optional) 
+
+
+## PlaceOrderMidSaveViewModel (object)
+
+
+### Properties
++ `midId` (number, required) 
++ `paymentProcessorId` (number, required) 
++ `prnCode` (string, required) 
++ `purchaseToken` (string, required) 
+
+
+## PlaceOrderPaymentSaveViewModel (object)
+
+
+### Properties
++ `paymentProcessorId` (number, optional) 
++ `instalments` (number, optional) 
++ `cardgatePaymentMethodId` (number, optional) 
++ `cardgatePaymentIssuerId` (number, optional) 
++ `name` (string, optional) 
++ `creditCard` (string, optional) 
++ `expiration` (string, optional) 
++ `cvv` (string, optional) 
++ `creditCardBrand` (string, optional) 
++ `cardId`: `00000000-0000-0000-0000-000000000000` (string, optional) 
+
+
+## PlaceOrderAddressSaveViewModel (object)
+
+
+### Properties
++ `id` (number, optional) 
++ `firstName` (string, optional) 
++ `middleName` (string, optional) 
++ `lastName` (string, optional) 
++ `address1` (string, optional) 
++ `address2` (string, optional) 
++ `city` (string, optional) 
++ `zipCode` (string, optional) 
++ `state` (string, optional) 
++ `countryCode` (string, optional) 
++ `phoneNumber` (string, optional) 
++ `isVerified` (boolean, optional) 
+
+
+## PlaceOrderAnalyticsViewModel (object)
+
+
+### Properties
++ `referringUrl` (string, optional) 
++ `landingUrl` (string, optional) 
++ `browser` (string, optional) 
++ `os` (string, optional) 
++ `screenResolution` (string, optional) 
++ `device` (string, optional) 
+
+
+## PlaceOrderAnalyticsBase64ViewModel (object)
+
+
+### Properties
++ `referringUrl` (string, optional) 
++ `landingUrl` (string, optional) 
++ `userStringData64` (string, optional) 
+
+
+## PlaceOrderFraudSaveViewModel (object)
+
+
+### Properties
++ `sessionId` (string, optional) 
+
+
+## PlaceOrderCallCenterSaveViewModel (object)
+
+
+### Properties
++ `callCenterId` (number, optional) 
++ `representativeName` (string, optional) 
+
+
+## PlaceOrderSaveResponseViewModel (object)
+
+
+### Properties
++ `success` (boolean, optional) 
++ `descriptor` (string, optional) 
++ `paymentProcessorId` (number, optional) 
++ `prnCode` (string, optional) 
++ `message` (string, optional) 
++ `orderNumber` (string, optional) 
++ `callBackUrl` (string, optional) 
++ `trackingNumber` (string, optional) 
++ `cardId`: `00000000-0000-0000-0000-000000000000` (string, optional) 
++ `customerResult`: `00000000-0000-0000-0000-000000000000` (PlaceOrderCustomerInfoViewModel, optional) 
++ `paymentContinueResult`: `00000000-0000-0000-0000-000000000000` (PlaceOrderPaymentContinueResultViewModel, optional) 
++ `customerVerified`: `00000000-0000-0000-0000-000000000000` (PlaceOrderCustomerVerifiedResponseViewModel, optional) 
++ `funnelBox`: `00000000-0000-0000-0000-000000000000` (SecondaryOrderSaveResponseViewModel, optional) 
++ `miniUpsell`: `00000000-0000-0000-0000-000000000000` (SecondaryOrderSaveResponseViewModel, optional) 
++ `campaignTrackings`: `00000000-0000-0000-0000-000000000000` (array[PlaceOrderCampaignTrackingSaveResponseViewModel], optional) 
++ `upsellTrackings`: `00000000-0000-0000-0000-000000000000` (array[PlaceOrderUpsellTrackingSaveResponseViewModel], optional) 
++ `upsells`: `00000000-0000-0000-0000-000000000000` (array[CampaignUpsellViewModel], optional) 
+
+
+## PlaceOrderCustomerInfoViewModel (object)
+
+
+### Properties
++ `shippingAddressId` (number, optional) 
++ `billingAddressId` (number, optional) 
++ `customerId` (number, optional) 
+
+
+## PlaceOrderPaymentContinueResultViewModel (object)
+
+
+### Properties
++ `actionUrl` (string, optional) 
++ `items` (array[KeyValuePairStringString], optional) 
+
+
+## KeyValuePairStringString (object)
+
+
+### Properties
++ `key` (string, optional) 
++ `value` (string, optional) 
+
+
+## PlaceOrderCustomerVerifiedResponseViewModel (object)
+
+
+### Properties
++ `emailVerified` (boolean, optional) 
++ `shippingAddressVerified` (boolean, optional) 
++ `billingAddressVerified` (boolean, optional) 
++ `suggestedAddress` (PlaceOrderCustomerSuggestionResponseViewModel, optional) 
+
+
+## PlaceOrderCustomerSuggestionResponseViewModel (object)
+
+
+### Properties
++ `address1` (string, optional) 
++ `state` (string, optional) 
++ `city` (string, optional) 
++ `zipCode` (string, optional) 
++ `countryName` (string, optional) 
++ `countryCode` (string, optional) 
+
+
+## SecondaryOrderSaveResponseViewModel (object)
+
+
+### Properties
++ `success` (boolean, optional) 
++ `message` (string, optional) 
++ `orderNumber` (string, optional) 
++ `descriptor` (string, optional) 
++ `paymentContinueResult` (PlaceOrderPaymentContinueResultViewModel, optional) 
+
+
+## PlaceOrderCampaignTrackingSaveResponseViewModel (object)
+
+
+### Properties
++ `isPostBackActive` (boolean, optional) 
++ `tracker` (string, optional) 
++ `pixelUrl` (string, optional) 
++ `fullPixelUrl` (string, optional) 
+
+
+## PlaceOrderUpsellTrackingSaveResponseViewModel (object)
+
+
+### Properties
++ `tracker` (string, optional) 
++ `campaignUpsellWebKey`: `00000000-0000-0000-0000-000000000000` (string, optional) 
++ `campaignUpsellUrl` (string, optional) 
++ `convertionPixelUrl` (string, optional) 
++ `fullConvertionPixelUrl` (string, optional) 
++ `clickPixelUrl` (string, optional) 
++ `fullClickPixelUrl` (string, optional) 
+
+
+## CampaignUpsellViewModel (object)
+
+
+### Properties
++ `id` (number, optional) 
++ `linkedCampaignName` (string, optional) 
++ `linkedCampaignId` (number, optional) 
++ `upsellUrl` (string, optional) 
++ `index` (number, optional) 
+
+
+## PlaceOrderUpdateSaveViewModel (object)
+
+
+### Properties
++ `paymentProcessorId` (number, optional) 
++ `trackingCountryCode` (string, optional) 
++ `trackingLanguageCountryCode` (string, optional) 
+
+
+## PlaceOrderUpsellReturnViewModel (object)
+
+
+### Properties
++ `success` (boolean, optional) 
++ `orderNumber` (string, optional) 
++ `descriptor` (string, optional) 
++ `message` (string, optional) 
+
+
+## PlaceOrderConfirmationReturnViewModel (object)
+
+
+### Properties
++ `success` (boolean, optional) 
++ `message` (string, optional) 
+
+
+## PlaceOrderBoletoReturnViewModel (object)
+
+
+### Properties
++ `success` (boolean, optional) 
++ `message` (string, optional) 
++ `actionUrl` (string, optional) 
+
+
+## PlaceOrderMidViewModel (object)
+
+
+### Properties
++ `shippingAddressCountryCode` (string, required) 
++ `creditCard` (string, required) 
++ `productId` (number, required) 
++ `creditCardBrand` (string, optional) 
++ `ip` (string, optional) 
+
+
+## PlaceOrderMidReturnViewModel (object)
+
+
+### Properties
++ `paymentProcessorId` (number, optional) 
++ `prnCode` (string, optional) 
++ `midId` (number, optional) 
+
+
+## LatestOrdersViewModelModel (object)
+
+
+### Properties
++ `createDate` (string, optional) 
++ `customerName` (string, optional) 
++ `customerLocation` (string, optional) 
+
+
+## RelatedOrdersModel (object)
+
+
+### Properties
++ `id` (number, optional) 
++ `orderNumber` (string, optional) 
++ `orderStatus` (string, optional) 
++ `languageCode` (string, optional) 
++ `currencyCode` (string, optional) 
++ `currencySign` (string, optional) 
++ `orderPrice` (number, optional) 
++ `orderPriceUSD` (number, optional) 
++ `ip` (string, optional) 
++ `productName` (string, optional) 
++ `orderType` (string, optional) 
++ `campaignName` (string, optional) 
++ `createDate` (string, optional) 
++ `createDateOffset` (string, optional) 
++ `sku` (string, optional) 
++ `category` (string, optional) 
++ `customerEmail` (string, optional) 
++ `firstName` (string, optional) 
++ `middleName` (string, optional) 
++ `lastName` (string, optional) 
++ `addressId` (number, optional) 
++ `shippingAddress` (OrderAddressModel, optional) 
++ `receipts` (array[OrdersReceiptModel], optional) 
++ `relatedOrders` (array[OrderInfoModel], optional) 
+
+
+## OrderAddressModel (object)
+
+
+### Properties
++ `id` (number, optional) 
++ `firstName` (string, optional) 
++ `middleName` (string, optional) 
++ `lastName` (string, optional) 
++ `address1` (string, optional) 
++ `address2` (string, optional) 
++ `city` (string, optional) 
++ `state` (string, optional) 
++ `countryCode` (string, optional) 
++ `countryName` (string, optional) 
++ `zipCode` (string, optional) 
++ `phoneNumber` (string, optional) 
++ `isVerified` (boolean, optional) 
++ `suggestion` (OrderAddressSuggestionModel, optional) 
+
+
+## OrderAddressSuggestionModel (object)
+
+
+### Properties
++ `address1` (string, optional) 
++ `city` (string, optional) 
++ `zipCode` (string, optional) 
++ `state` (string, optional) 
++ `countryCode` (string, optional) 
++ `countryName` (string, optional) 
+
+
+## OrdersReceiptModel (object)
+
+
+### Properties
++ `transactionId`: `00000000-0000-0000-0000-000000000000` (string, optional) 
++ `paymentStatus` (string, optional) 
++ `paymentDescription` (string, optional) 
++ `prnCode` (string, optional) 
++ `paymentNumber` (string, optional) 
++ `currencyCode` (string, optional) 
++ `amount` (number, optional) 
++ `formattedAmount` (string, optional) 
++ `midDescriptor` (string, optional) 
++ `receiptDate` (string, optional) 
+
+
+## OrderInfoModel (object)
+
+
+### Properties
++ `id` (number, optional) 
++ `orderNumber` (string, optional) 
++ `orderStatus` (string, optional) 
++ `languageCode` (string, optional) 
++ `currencyCode` (string, optional) 
++ `currencySign` (string, optional) 
++ `orderPrice` (number, optional) 
++ `orderPriceUSD` (number, optional) 
++ `ip` (string, optional) 
++ `productName` (string, optional) 
++ `sku` (string, optional) 
++ `category` (string, optional) 
++ `orderType` (string, optional) 
++ `campaignName` (string, optional) 
++ `createDate` (string, optional) 
++ `createDateOffset` (string, optional) 
++ `receipts` (array[OrdersReceiptModel], optional) 
+
+
+## CustomerOrdersModel (object)
+
+
+### Properties
++ `customerEmail` (string, optional) 
++ `firstName` (string, optional) 
++ `middleName` (string, optional) 
++ `lastName` (string, optional) 
++ `shippingAddress` (array[AddressViewModel], optional) 
++ `orders` (array[OrderInfoModel], optional) 
+
+
+## CampaignProductSimpleListViewModel (object)
+
+
+### Properties
++ `productId` (number, optional) 
++ `productName` (string, optional) 
++ `sku` (string, optional) 
++ `message` (string, optional) 
++ `warrantyTypeId` (number, optional) 
++ `warrantyPeriod` (number, optional) 
++ `quantity` (number, optional) 
++ `shippings` (array[CampaignProductShippingViewModel], optional) 
++ `productPrices` (array[KeyValuePairStringCampaignProductPriceViewModel], optional) 
+
+
+## CampaignProductShippingViewModel (object)
+
+
+### Properties
++ `shippingMethodId` (number, optional) 
++ `shippingName` (string, optional) 
++ `price` (number, optional) 
++ `formattedPrice` (string, optional) 
+
+
+## KeyValuePairStringCampaignProductPriceViewModel (object)
+
+
+### Properties
++ `key` (string, optional) 
++ `value` (CampaignProductPriceViewModel, optional) 
+
+
+## CampaignProductPriceViewModel (object)
+
+
+### Properties
++ `type` (string, optional) 
++ `value` (number, optional) 
++ `formattedValue` (string, optional) 
++ `countryCode` (string, optional) 
++ `globalCurrencyCode` (string, optional) 
++ `isGlobalProductPrice` (boolean, optional) 
++ `isGlobalCampaignPrice` (boolean, optional) 
+
+
+## CampaignProductListViewModel (object)
+
+
+### Properties
++ `productId` (number, optional) 
++ `sku` (string, optional) 
++ `name` (string, optional) 
++ `imgUrlLg` (string, optional) 
++ `imgUrlSm` (string, optional) 
++ `imgUrlMd` (string, optional) 
++ `digitalProduct` (boolean, optional) 
++ `isPackage` (boolean, optional) 
++ `productPrices` (array[CampaignProductPriceViewModel], optional) 
+
+
+## CampaignProductViewModel (object)
+
+
+### Properties
++ `id` (number, optional) 
++ `skuId` (string, optional) 
++ `name` (string, optional) 
++ `weight` (number, optional) 
++ `unitOfMeasure` (string, optional) 
++ `imgUrlLg` (string, optional) 
++ `imgUrlSm` (string, optional) 
++ `imgUrlMd` (string, optional) 
++ `warrantyTypeId` (number, optional) 
++ `warrantyPeriod` (number, optional) 
++ `digitalProduct` (boolean, optional) 
++ `isPackage` (boolean, optional) 
++ `productPrices` (array[CampaignProductPriceViewModel], optional) 
++ `productPackages` (array[CampaignProductPackageViewModel], optional) 
+
+
+## CampaignProductPackageViewModel (object)
+
+
+### Properties
++ `name` (string, optional) 
++ `skuId` (string, optional) 
++ `quantity` (number, optional) 
++ `imgUrlLg` (string, optional) 
++ `imgUrlSm` (string, optional) 
++ `imgUrlMd` (string, optional) 
++ `warrantyTypeId` (number, optional) 
++ `warrantyPeriod` (number, optional) 
++ `digitalProduct` (boolean, optional) 
+
+
+## ShoppingCartCreateViewModel (object)
+
+
+### Properties
++ `product` (ShoppingCartProductCreateViewModel, required) 
++ `behaviorId` (number, optional) 
++ `customerIP` (string, optional) 
+
+
+## ShoppingCartProductCreateViewModel (object)
+
+
+### Properties
++ `productId` (number, required) 
++ `quantity` (number, required) 
++ `price` (number, optional) 
++ `shippingMethodId` (number, optional) 
+
+
+## ShoppingCartPublicViewModel (object)
+
+
+### Properties
++ `sessionId`: `00000000-0000-0000-0000-000000000000` (string, optional) 
++ `cartNumber` (string, optional) 
++ `couponCode` (string, optional) 
++ `couponDescription` (string, optional) 
++ `products` (array[ShoppingCartProductPublicViewModel], optional) 
+
+
+## ShoppingCartProductPublicViewModel (object)
+
+
+### Properties
++ `productId` (number, optional) 
++ `productName` (string, optional) 
++ `quantity` (number, optional) 
++ `shippingMethodId` (number, optional) 
++ `currencyCode` (string, optional) 
++ `price` (number, optional) 
++ `surcharge` (number, optional) 
++ `shippingPrice` (number, optional) 
+
+
+## CheckoutRequest (object)
+
+
+### Properties
++ `payment` (PaymentDetails, required) 
++ `behaviorId` (number, optional) 
++ `sessionId`: `00000000-0000-0000-0000-000000000000` (string, optional) 
++ `analytics`: `00000000-0000-0000-0000-000000000000` (CheckoutAnalytics, optional) 
++ `fraudSessionId` (string, optional) 
++ `mid` (MidPaymentDetails, optional) 
+
+
+## PaymentDetails (object)
+
+
+### Properties
++ `paymentProcessorId` (number, optional) 
++ `cardgatePaymentMethodId` (number, optional) 
++ `cardgatePaymentIssuerId` (number, optional) 
++ `instalments` (number, optional) 
++ `name` (string, optional) 
++ `creditCard` (string, optional) 
++ `expiration` (string, optional) 
++ `cvv` (string, optional) 
++ `creditCardBrand` (string, optional) 
++ `cardId`: `00000000-0000-0000-0000-000000000000` (string, optional) 
+
+
+## CheckoutAnalytics (object)
+
+
+### Properties
++ `referringUrl` (string, optional) 
++ `landingUrl` (string, optional) 
++ `browser` (string, optional) 
++ `os` (string, optional) 
++ `screenResolution` (string, optional) 
++ `device` (string, optional) 
+
+
+## MidPaymentDetails (object)
+
+
+### Properties
++ `midId` (number, required) 
++ `paymentProcessorId` (number, required) 
++ `prnCode` (string, required) 
++ `purchaseToken` (string, required) 
+
+
+## CheckoutResponse (object)
+
+
+### Properties
++ `success` (boolean, optional) 
++ `message` (string, optional) 
++ `shoppingCartNumber` (string, optional) 
++ `callBackUrl` (string, optional) 
++ `trackingNumber` (string, optional) 
++ `descriptor` (string, optional) 
++ `paymentContinueResult` (PaymentContinueResult, optional) 
++ `customerVerification` (CustomerVerification, optional) 
++ `campaignTrackings` (array[CampaignTracking], optional) 
+
+
+## PaymentContinueResult (object)
+
+
+### Properties
++ `actionUrl` (string, optional) 
++ `items` (array[KeyValuePairStringString], optional) 
+
+
+## CustomerVerification (object)
+
+
+### Properties
++ `emailVerified` (boolean, optional) 
++ `shippingAddressVerified` (boolean, optional) 
++ `billingAddressVerified` (boolean, optional) 
+
+
+## CampaignTracking (object)
+
+
+### Properties
++ `isPostBackActive` (boolean, optional) 
++ `tracker` (string, optional) 
++ `pixelUrl` (string, optional) 
++ `fullPixelUrl` (string, optional) 
+
+
+## ConfirmPaymentResponse (object)
+
+
+### Properties
++ `success` (boolean, optional) 
++ `message` (string, optional) 
++ `firstName` (string, optional) 
++ `lastName` (string, optional) 
++ `middleName` (string, optional) 
++ `email` (string, optional) 
++ `address1` (string, optional) 
++ `address2` (string, optional) 
++ `city` (string, optional) 
++ `zipCode` (string, optional) 
++ `state` (string, optional) 
++ `country` (string, optional)
