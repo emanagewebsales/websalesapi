@@ -6,7 +6,7 @@ info:
 
     #About
     <p>
-      The <strong>Emanage CRM Sales API</strong> is the conjunction of HTTP-based APIs that allows any website to integrates with <strong>eManageCRM</strong>. The APIs will allow to query campaign's data, such as products and prices, also allow to create new customers, post new orders and submit payments. This documentation describes all end-points available and their functionalities.
+      The <strong>eManage CRM Sales API</strong> is the conjunction of HTTP-based APIs that allows any website to integrates with <strong>eManageCRM</strong>. The APIs will allow to query campaign's data, such as products and prices, also allow to create new customers, post new orders and submit payments. This documentation describes all end-points available and their functionalities.
     </p>
 
     #Allowed methods HTTPs requests
@@ -16,16 +16,16 @@ info:
         <th>Description</th>
       </tr>
       <tr>
-        <td>PUT </td>
-        <td>Update resource</td>
+        <td>GET </td>
+        <td>Get a resource or list of resources</td>
       </tr>
       <tr>
         <td>POST </td>
         <td>To create resource</td>
       </tr>
       <tr>
-        <td>GET </td>
-        <td>Get a resource or list of resources</td>
+        <td>PUT </td>
+        <td>Update resource</td>
       </tr>
       <tr>
         <td>DELETE </td>
@@ -78,7 +78,7 @@ info:
     
     <hr/>
 
-      <strong>Some important things to have in mind before starting any integration!<br> Before starting any integration, please nake sure to have: </strong>
+      <strong>Some important things to have in mind before starting any integration!<br> Before starting any integration, please make sure to have: </strong>
       
       <ul>
         <li><strong>X_CID: </strong>That will be your client key. As soon as a new client onboard in eManageCRM, they will receive this key with their instance package. That is required to be added in the header of every call in the <strong>Sales API</strong>.</li>
@@ -119,31 +119,20 @@ info:
 
 host: sales-prod.tryemanagecrm.com
 tags:
-  - name: Callback
-    description: Things regarding to callbacks
-    #externalDocs:
-    #  description: Find out more
-    #  url: 'http://swagger.io'
   - name: Campaigns
-    description: Everything about the Campaign
-  - name: Chargeback
-    description: Chargeback related
+    description: Retrieves basic campaign information, such as campaign name and default language code. It can be useful at a development stage to find a campaign based on a webkey. Since there can be multiple websites in development simultaneously, there should be an easy way to determine what campaign is being currently used at a specific website. This information shouldn't be revealed to the customer but can be displayed in the console during development.
   - name: Coupons
-    description: Everything regarding Coupons
+    description: Information regarding to Coupon, cupoon creation and calculate coupon code.
   - name: Customers
-    description: Everything regarding our Customers
-  - name: Files
-    description: Everything regarding Coupons
-  - name: FraudPrevention
-    description: Everything regarding Coupons
+    description: Customers, Shipping Address, Customer location, Sign-in, Billing informations
   - name: Orders
-    description: Everything about Order and beyond
+    description: Orders information, order number, invoice, last orders, related orders, orders by customer.
   - name: Payments
-    description: Payment & transaction related
+    description: Manage payment and transactions by order number.
   - name: Products
-    description: Everything regarding Product
+    description: Set product price, product price per country code, product list per country code. Also product per country code, Mini upsell, mini upsell per country code.
   - name: ShoppingCart
-    description: All shopping cart related 
+    description: Shopping Cart allows buyers to create new carts, add, remove, and update items. Register new users, apply coupons, confirm payments, shipping method and checkout.
 
 schemes:
   - https
@@ -250,7 +239,7 @@ paths:
           in: header
           required: true
           type: string
-          description: The X_CID specific client
+          description: The X_CID of the specific client
       responses:
         '200':
           description: OK
@@ -282,7 +271,7 @@ paths:
           in: header
           required: true
           type: string
-          description: The X_CID specific client
+          description: The X_CID of the specific client
       responses:
         '200':
           description: OK
@@ -341,7 +330,7 @@ paths:
           in: header
           required: true
           type: string
-          description: The X_CID specific client
+          description: The X_CID of the specific client
       responses:
         '200':
           description: OK
@@ -373,7 +362,7 @@ paths:
           in: header
           required: true
           type: string
-          description: The X_CID specific client
+          description: The X_CID of the specific client
         - name: countryCode
           in: query
           required: false
@@ -389,48 +378,48 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/CampaignCountryStateViewModel'
-  '/api/campaigns/{webkey}/affiliate':
-    x-summary: Affiliate
-    x-description: |
-      --- Description pending ---
-    post:
-      summary: POST /api/campaigns/{webkey}/affiliate
-      tags:
-        - Campaigns
-      operationId: Campaigns_Post
-      consumes:
-        - application/json
-        - text/json
-        - application/xml
-        - text/xml
-        - application/x-www-form-urlencoded
-      produces:
-        - application/json
-        - text/json
-        - application/xml
-        - text/xml
-      parameters:
-        - name: webkey
-          in: path
-          required: true
-          type: string
-          format: uuid
-          description: The unique ID of each campaign
-        - name: X_CID
-          in: header
-          required: true
-          type: string
-          description: The X_CID specific client
-        - name: model
-          in: body
-          required: true
-          schema:
-            $ref: '#/definitions/CampaignAffiliateSaveViewModel'
-      responses:
-        '200':
-          description: OK
-          schema:
-            type: object
+  #'/api/campaigns/{webkey}/affiliate':
+  #  x-summary: Affiliate
+  #  x-description: |
+  #    --- Description pending ---
+  #  post:
+  #    summary: POST /api/campaigns/{webkey}/affiliate
+  #    tags:
+  #      - Campaigns
+  #    operationId: Campaigns_Post
+  #    consumes:
+  #      - application/json
+  #      - text/json
+  #      - application/xml
+  #      - text/xml
+  #      - application/x-www-form-urlencoded
+  #    produces:
+  #      - application/json
+  #      - text/json
+  #      - application/xml
+  #      - text/xml
+  #    parameters:
+  #      - name: webkey
+  #        in: path
+  #        required: true
+  #        type: string
+  #        format: uuid
+  #        description: The unique ID of each campaign
+  #      - name: X_CID
+  #        in: header
+  #        required: true
+  #        type: string
+  #        description: The X_CID of the specific client
+  #      - name: model
+  #        in: body
+  #        required: true
+  #        schema:
+  #          $ref: '#/definitions/CampaignAffiliateSaveViewModel'
+  #    responses:
+  #      '200':
+  #        description: OK
+  #        schema:
+  #          type: object
   '/api/campaigns/{webkey}/upsells':
     x-summary: Upsells
     x-description: |
@@ -458,7 +447,7 @@ paths:
           in: header
           required: true
           type: string
-          description: The X_CID specific client
+          description: The X_CID of the specific client
       responses:
         '200':
           description: OK
@@ -517,17 +506,17 @@ paths:
           in: header
           required: true
           type: string
-          description: The X_CID specific client
+          description: The X_CID of the specific client
         - name: couponCode
           in: path
           required: true
           type: string
-          description: Coupon Code ID
+          description: The coupon code id
         - name: currencyCode
           in: query
           required: true
           type: string
-          description: Currency Code ID
+          description: The currency code id
       responses:
         '200':
           description: OK
@@ -559,23 +548,23 @@ paths:
           in: header
           required: true
           type: string
-          description: The X_CID specific client
+          description: The X_CID of the specific client
         - name: couponCode
           in: path
           required: true
           type: string
-          description: Coupon code ID
+          description: The coupon code id
         - name: currencyCode
           in: query
           required: true
           type: string
-          description: Currency code ID
+          description: The currency code id
         - name: productPrice
           in: query
           required: true
           type: number
           format: double
-          description: The price set for the product
+          description: The price of the product
         - name: shippingPrice
           in: query
           required: true
@@ -644,7 +633,7 @@ paths:
           in: header
           required: true
           type: string
-          description: The X_CID specific client
+          description: The X_CID of the specific client
         - name: email
           in: query
           required: true
@@ -687,7 +676,7 @@ paths:
           in: header
           required: true
           type: string
-          description: The X_CID specific client
+          description: The X_CID of the specific client
         - name: model
           in: body
           required: true
@@ -756,7 +745,7 @@ paths:
           in: header
           required: true
           type: string
-          description: The X_CID specific client
+          description: The X_CID of the specific client
       responses:
         '200':
           description: OK
@@ -855,114 +844,119 @@ paths:
           description: OK
           schema:
             type: object
-  '/api/customers/export/{datini}/{datend}':
-    x-summary: TBD
-    x-description: |
-      <p>TBC</p>
-    get:
-      summary: GET /api/customers/export/{datini}/{datend}
-      tags:
-        - Customers
-      operationId: Customers_Get
-      consumes: []
-      produces:
-        - application/json
-        - text/json
-        - application/xml
-        - text/xml
-      parameters:
-        - name: datini
-          in: path
-          required: true
-          type: string
-          format: date-time
-        - name: datend
-          in: path
-          required: true
-          type: string
-          format: date-time
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/ExportCustomerViewModel'
-  '/api/files/download':
-    x-summary: Get Files
-    x-description: |
-      <p>TBC</p>
-    get:
-      tags:
-        - Files
-      operationId: Files_Get
-      consumes: []
-      produces:
-        - application/json
-        - text/json
-        - application/xml
-        - text/xml
-      parameters:
-        - name: key
-          in: query
-          required: true
-          type: string
-        - name: id
-          in: query
-          required: true
-          type: integer
-          format: int32
-      responses:
-        '200':
-          description: OK
-          schema:
-            type: object
-  /api/fraudprevention:
-    x-summary: Fraud Prevention
-    x-description: |
-      <p>TBC</p>
-    post:
-      tags:
-        - FraudPrevention
-      operationId: FraudPrevention_Post
-      consumes:
-        - application/json
-        - text/json
-        - application/xml
-        - text/xml
-        - application/x-www-form-urlencoded
-      produces:
-        - application/json
-        - text/json
-        - application/xml
-        - text/xml
-      parameters:
-        - name: transaction
-          in: body
-          required: true
-          schema:
-            $ref: '#/definitions/FraudAnalysisTransaction'
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/FraudAnalysisResponse'
-  /:
-    get:
-      tags:
-        - Index
-      operationId: Index_Get
-      consumes: []
-      produces:
-        - application/json
-        - text/json
-        - application/xml
-        - text/xml
-      responses:
-        '200':
-          description: OK
-          schema:
-            type: object
+  #'/api/customers/export/{datini}/{datend}':
+  #  x-summary: TBD
+  #  x-description: |
+  #    <p>TBC</p>
+  #  get:
+  #    summary: GET /api/customers/export/{datini}/{datend}
+  #    tags:
+  #      - Customers
+  #    operationId: Customers_Get
+  #    consumes: []
+  #    produces:
+  #      - application/json
+  #      - text/json
+  #      - application/xml
+  #      - text/xml
+  #    parameters:
+  #      - name: datini
+  #        in: path
+  #        required: true
+  #        type: string
+  #        format: date-time
+  #      - name: datend
+  #        in: path
+  #        required: true
+  #        type: string
+  #        format: date-time
+  #    responses:
+  #      '200':
+  #        description: OK
+  #        schema:
+  #          $ref: '#/definitions/ExportCustomerViewModel'
+  #'/api/files/download':
+  #  x-summary: Get Files
+  #  x-description: |
+  #    <p>TBC</p>
+  #  get:
+  #    tags:
+  #      - Files
+  #    operationId: Files_Get
+  #    consumes: []
+  #    produces:
+  #      - application/json
+  #      - text/json
+  #      - application/xml
+  #      - text/xml
+  #    parameters:
+  #      - name: key
+  #        in: query
+  #        required: true
+  #        type: string
+  #      - name: id
+  #        in: query
+  #        required: true
+  #        type: integer
+  #        format: int32
+  #    responses:
+  #      '200':
+  #        description: OK
+  #        schema:
+  #          type: object
+  #'/api/fraudprevention':
+  #  x-summary: Fraud Prevention
+  #  x-description: |
+  #    <p>TBC</p>
+  #  post:
+  #    tags:
+  #      - FraudPrevention
+  #    operationId: FraudPrevention_Post
+  #    consumes:
+  #      - application/json
+  #      - text/json
+  #      - application/xml
+  #      - text/xml
+  #      - application/x-www-form-urlencoded
+  #    produces:
+  #      - application/json
+  #      - text/json
+  #      - application/xml
+  #      - text/xml
+  #    parameters:
+  #      - name: transaction
+  #        in: body
+  #        required: true
+  #        schema:
+  #          $ref: '#/definitions/FraudAnalysisTransaction'
+  #    responses:
+  #      '200':
+  #        description: OK
+  #        schema:
+  #          $ref: '#/definitions/FraudAnalysisResponse'
+  #'/':
+  #  get:
+  #    tags:
+  #      - Index
+  #    operationId: Index_Get
+  #    consumes: []
+  #    produces:
+  #      - application/json
+  #      - text/json
+  #      - application/xml
+  #      - text/xml
+  #    responses:
+  #      '200':
+  #        description: OK
+  #        schema:
+  #          type: object
   '/api/orders/{webkey}':
+    x-summary: Place Order
+    x-description: |
+      <p>The place order API is responsible for sending orders to the CRM platform. </p>
+      <p>This endpoint uses data filled by the customer, selected products and analytics. This endpoint will be used to place the main order with the funnel and miniupsell, as well as upsell orders. </p>
     put:
+      summary: PUT /api/orders/{webkey}   (confirm payment for the products purchase using third-party payment providers.)
       tags:
         - Orders
       operationId: Orders_Put
@@ -983,10 +977,17 @@ paths:
           required: true
           type: string
           format: uuid
+          description: The unique ID of each campaign
+        - name: X_CID
+          in: header
+          required: true
+          type: string
+          description: The X_CID of the specific client
         - name: trackingNumber
           in: query
           required: true
           type: string
+          description: Tracking number of the order
         - name: model
           in: body
           required: true
@@ -996,12 +997,14 @@ paths:
           in: query
           required: false
           type: boolean
+          description: Set true if test order
       responses:
         '200':
           description: OK
           schema:
             $ref: '#/definitions/PlaceOrderUpdateReturnViewModel'
     post:
+      summary: POST /api/orders/{webkey}   (Place order/Purchase product)
       tags:
         - Orders
       operationId: Orders_Post
@@ -1022,6 +1025,12 @@ paths:
           required: true
           type: string
           format: uuid
+          description: The unique ID of each campaign
+        - name: X_CID
+          in: header
+          required: true
+          type: string
+          description: The X_CID of the specific client
         - name: model
           in: body
           required: true
@@ -1032,17 +1041,23 @@ paths:
           required: false
           type: integer
           format: int32
+          description: The id of the behavior with the post, such as place order or purchace proudct.
         - name: useShippingCountry
           in: query
           required: false
           type: boolean
+          description: Use the shipping country or not.
       responses:
         '200':
           description: OK
           schema:
             $ref: '#/definitions/PlaceOrderSaveResponseViewModel'
   '/api/orders/upsell/{orderNumber}':
+    x-summary: Get purchased Order's Upsells
+    x-description: |
+      <p>This API is for call centre sale use. CSR's can get upsells related to existing purchased Order in "Upsell Sale" sub-menu under "Customer Service" menu in CRM.</p>
     post:
+      summary: POST /api/orders/upsell/{orderNumber}
       tags:
         - Orders
       operationId: Orders_Post
@@ -1057,13 +1072,18 @@ paths:
           in: path
           required: true
           type: string
+          description: The order number
       responses:
         '200':
           description: OK
           schema:
             $ref: '#/definitions/PlaceOrderUpsellReturnViewModel'
   '/api/orders/{orderNumber}':
+    x-summary: Get purchased Order's information
+    x-description: |
+      <p>This endpoint is to get purchased order's information.<p>
     post:
+      summary: POST /api/orders/{orderNumber}
       tags:
         - Orders
       operationId: Orders_PostPreAuth
@@ -1078,6 +1098,7 @@ paths:
           in: path
           required: true
           type: string
+          description: The order number.
       responses:
         '200':
           description: OK
@@ -1085,6 +1106,7 @@ paths:
             $ref: '#/definitions/PlaceOrderConfirmationReturnViewModel'
   '/api/orders/boleto/{orderNumber}':
     post:
+      summary: POST /api/orders/boleto/{orderNumber}
       tags:
         - Orders
       operationId: Orders_PostNewUnifiedBoleto
@@ -1099,6 +1121,7 @@ paths:
           in: path
           required: true
           type: string
+          description: The order number.
       responses:
         '200':
           description: OK
@@ -1106,6 +1129,7 @@ paths:
             $ref: '#/definitions/PlaceOrderBoletoReturnViewModel'
   '/api/orders/mid/{webkey}':
     post:
+      summary: POST /api/orders/mid/{webkey}
       tags:
         - Orders
       operationId: Orders_PostGetNextMid
@@ -1126,6 +1150,12 @@ paths:
           required: true
           type: string
           format: uuid
+          description: The unique ID of each campaign
+        - name: X_CID
+          in: header
+          required: true
+          type: string
+          description: The X_CID of the specific client
         - name: model
           in: body
           required: true
@@ -1138,6 +1168,7 @@ paths:
             $ref: '#/definitions/PlaceOrderMidReturnViewModel'
   '/api/orders/latestorders/{webkey}':
     get:
+      summary: GET /api/orders/latestorders/{webkey}
       tags:
         - Orders
       operationId: Orders_GetLatestOrdersCustomerInfo
@@ -1153,6 +1184,12 @@ paths:
           required: true
           type: string
           format: uuid
+          description: The unique ID of each campaign
+        - name: X_CID
+          in: header
+          required: true
+          type: string
+          description: The X_CID of the specific client
       responses:
         '200':
           description: OK
@@ -1160,6 +1197,7 @@ paths:
             $ref: '#/definitions/LatestOrdersViewModelModel'
   '/api/orders/{orderNumber}/relatedorders':
     get:
+      summary: GET /api/orders/{orderNumber}/relatedorders
       tags:
         - Orders
       operationId: Orders_GetRelatedOrders
@@ -1174,6 +1212,7 @@ paths:
           in: path
           required: true
           type: string
+          description: The order number
       responses:
         '200':
           description: OK
@@ -1181,6 +1220,7 @@ paths:
             $ref: '#/definitions/RelatedOrdersModel'
   '/api/orders/{webkey}/customerorders':
     get:
+      summary: GET /api/orders/{webkey}/customerorders
       tags:
         - Orders
       operationId: Orders_GetCustomerOrders
@@ -1196,10 +1236,17 @@ paths:
           required: true
           type: string
           format: uuid
+          description: The unique ID of each campaign
+        - name: X_CID
+          in: header
+          required: true
+          type: string
+          description: The X_CID of the specific client
         - name: email
           in: query
           required: true
           type: string
+          description: The customer email address
       responses:
         '200':
           description: OK
@@ -1207,6 +1254,7 @@ paths:
             $ref: '#/definitions/CustomerOrdersModel'
   '/api/payments/transactions/{orderNumber}':
     get:
+      summary: GET /api/payments/transactions/{orderNumber}
       tags:
         - Payments
       operationId: Payments_Get
@@ -1221,13 +1269,19 @@ paths:
           in: path
           required: true
           type: string
+          description: The order number
       responses:
         '200':
           description: OK
           schema:
             type: object
   '/api/campaigns/{webkey}/products/prices':
+    x-summary: Prices
+    x-description: |
+        <p>This is the main endpoint to retrieve a list of products from a campaign. </p>
+        <p>By default, without country code specified, Websales API will define location automatically and provide prices based on the request location. This data can be used to display the list of products and prices to a user. Each product in the list has extensive information including but not limited to: name, price, available shipping methods. The prices are served both as raw values or formatted with the defined currency: "5" and "$5.00" </p>
     get:
+      summary: GET /api/campaigns/{webkey}/products/prices
       tags:
         - Products
       operationId: Products_GetCampaignProductPrices
@@ -1243,13 +1297,24 @@ paths:
           required: true
           type: string
           format: uuid
+          description: The unique ID of each campaign
+        - name: X_CID
+          in: header
+          required: true
+          type: string
+          description: The X_CID of the specific client
       responses:
         '200':
           description: OK
           schema:
             $ref: '#/definitions/CampaignProductSimpleListViewModel'
   '/api/campaigns/{webkey}/products/prices/{countryCode}':
+    x-summary: Get Product prices based on Country Code
+    x-description: |
+        <p>This endpoint provides the same data as previous one, but a country code can be specified. Usually this data is required by customer service.</p>
+        <p>It also can be used at development stage to check the prices for different countries (the other option is proxy settings).</p>
     get:
+      summary: GET /api/campaigns/{webkey}/products/prices/{countryCode}
       tags:
         - Products
       operationId: Products_GetCampaignProductPricesByCountry
@@ -1265,6 +1330,12 @@ paths:
           required: true
           type: string
           format: uuid
+          description: The unique ID of each campaign
+        - name: X_CID
+          in: header
+          required: true
+          type: string
+          description: The X_CID of the specific client   
         - name: countryCode
           in: path
           required: true
@@ -1275,7 +1346,11 @@ paths:
           schema:
             $ref: '#/definitions/CampaignProductSimpleListViewModel'
   '/api/campaigns/{webkey}/products/list/{countryCode}':
+    x-summary: Show the list of product in the Campaign by Country.
+    x-description: |
+        <p>This endpoint is to retrieve a list of products by country within the campaign.</p>
     get:
+      summary: /api/campaigns/{webkey}/products/list/{countryCode}
       tags:
         - Products
       operationId: Products_GetCampaignProductsByCountry
@@ -1291,17 +1366,30 @@ paths:
           required: true
           type: string
           format: uuid
+          description: The unique ID of each campaign
+        - name: X_CID
+          in: header
+          required: true
+          type: string
+          description: The X_CID of the specific client   
         - name: countryCode
           in: path
           required: true
           type: string
+          description: The country code ID.
       responses:
         '200':
           description: OK
           schema:
             $ref: '#/definitions/CampaignProductSimpleListViewModel'
   '/api/campaigns/{webkey}/products/{productId}/miniupsells':
+    x-summary: Mini Upsells
+    x-description: |
+        <p>This endpoint provides a list of mini upsells linked to a specified product.</p>
+        <p>Mini upsell is enclosed in the main order. Hence, a customer prompted to purchase a mini upsell right after they submitted the form to purchase main product, but before they made a payment.</p>
+        <p>Normally it is used right after a customer has submitted a form to purchase a product.</p>
     get:
+      summary: GET /api/campaigns/{webkey}/products/{productId}/miniupsells
       tags:
         - Products
       operationId: Products_GetCampaignMiniUpsellsByCountry
@@ -1317,18 +1405,30 @@ paths:
           required: true
           type: string
           format: uuid
+          description: The unique ID of each campaign
+        - name: X_CID
+          in: header
+          required: true
+          type: string
+          description: The X_CID of the specific client
         - name: productId
           in: path
           required: true
           type: integer
           format: int32
+          description: The Product ID
       responses:
         '200':
           description: OK
           schema:
             $ref: '#/definitions/CampaignProductListViewModel'
   '/api/campaigns/{webkey}/products/{productId}/miniupsells/{countryCode}':
+    x-summary: Get Mini upsell for Product
+    x-description: |
+        <p>This endpoint provides the same data as previous one, but a country code can be specified. Usually this data is required by customer service.</p>
+        <p>It also can be used at development stage to check the prices for different countries (the other option is proxy settings).</p>
     get:
+      summary: GET /api/campaigns/{webkey}/products/{productId}/miniupsells/{countryCode}
       tags:
         - Products
       operationId: Products_GetCampaignMiniUpsells
@@ -1344,22 +1444,34 @@ paths:
           required: true
           type: string
           format: uuid
+          description: The unique ID of each campaign
+        - name: X_CID
+          in: header
+          required: true
+          type: string
+          description: The X_CID of the specific client   
         - name: productId
           in: path
           required: true
           type: integer
           format: int32
+          description: The Product ID
         - name: countryCode
           in: path
           required: true
           type: string
+          description: The Country Code
       responses:
         '200':
           description: OK
           schema:
             $ref: '#/definitions/CampaignProductSimpleListViewModel'
   '/api/campaigns/{webkey}/products/{productId}/{countryCode}':
+    x-summary: Get Product Details
+    x-description: |
+        This endpoint returns detailed information about a product. In comparisement with the standard list of products with prices, this endpoint contains such information as product weight, unit of measurement, images.
     get:
+      summary: GET /api/campaigns/{webkey}/products/{productId}/{countryCode}
       tags:
         - Products
       operationId: Products_GetCampaignProductById
@@ -1375,22 +1487,34 @@ paths:
           required: true
           type: string
           format: uuid
+          description: The unique ID of each campaign
+        - name: X_CID
+          in: header
+          required: true
+          type: string
+          description: The X_CID of the specific client
         - name: productId
           in: path
           required: true
           type: integer
           format: int32
+          description: The Product ID
         - name: countryCode
           in: path
           required: true
           type: string
+          description: The Country Code
       responses:
         '200':
           description: OK
           schema:
             $ref: '#/definitions/CampaignProductViewModel'
   '/api/campaigns/{webkey}/shippings/{productId}':
+    x-summary: Get list of Shipping Methods
+    x-description: |
+        <p>This API helps to retrieve a shipping information for a specific product from a Campaign. It could be used to show the total price including shipping. Another property returned in an object using this API is called shippingMethodId and it will be used by PLACE ORDER API to complete the process.</p>
     get:
+      summary: GET /api/campaigns/{webkey}/shippings/{productId}
       tags:
         - Products
       operationId: Products_GetCampaignShippings
@@ -1406,26 +1530,39 @@ paths:
           required: true
           type: string
           format: uuid
+          description: The unique ID of each campaign
+        - name: X_CID
+          in: header
+          required: true
+          type: string
+          description: The X_CID of the specific client   
         - name: productId
           in: path
           required: true
           type: integer
           format: int32
+          description: The Product ID
         - name: countryCode
           in: query
           required: false
           type: string
+          description: The Country Code
         - name: isMiniUpsell
           in: query
           required: false
           type: boolean
+          description: Set true if a Mini Upsell
       responses:
         '200':
           description: OK
           schema:
             $ref: '#/definitions/CampaignProductShippingViewModel'
   '/api/shoppingcart/{webkey}/new':
+    x-summary: Create Shopping cart
+    x-description: |
+        <p>This API creates a new shopping cart. It returns a Session Id that could be used to get the shopping cart. To create a new shopping cart one product must be added to it by passing productId to the API.</p>
     post:
+      summary: POST /api/shoppingcart/{webkey}/new
       tags:
         - ShoppingCart
       operationId: ShoppingCart_CreateAsync
@@ -1446,6 +1583,12 @@ paths:
           required: true
           type: string
           format: uuid
+          description: The unique ID of each campaign
+        - name: X_CID
+          in: header
+          required: true
+          type: string
+          description: The X_CID of the specific client   
         - name: shoppingCart
           in: body
           required: true
@@ -1459,7 +1602,12 @@ paths:
             type: string
             example: 00000000-0000-0000-0000-000000000000
   '/api/shoppingcart/{webkey}':
+    x-summary: Get Shopping Cart
+    x-description: |
+        <p>This API fetches an existing shopping cart. Campaign Web Key and Session Id are required. This API can be used to retrieve an existing shopping cart products.</p>
+        <p>A list of products can be displayed at checkout page or to update shopping cart for a returning customer.</p>
     get:
+      summary: GET /api/shoppingcart/{webkey}
       tags:
         - ShoppingCart
       operationId: ShoppingCart_GetShoppingCart
@@ -1475,18 +1623,29 @@ paths:
           required: true
           type: string
           format: uuid
+          description: The unique ID of each campaign
+        - name: X_CID
+          in: header
+          required: true
+          type: string
+          description: The X_CID of the specific client   
         - name: sessionId
           in: query
           required: true
           type: string
           format: uuid
+          description: The session id
       responses:
         '200':
           description: OK
           schema:
             $ref: '#/definitions/ShoppingCartPublicViewModel'
   '/api/shoppingcart/{webkey}/checkout':
+    x-summary: Shopping cart checkout
+    x-description: |
+        <p>This API is used to complete the checkout process. It could be used on the order page. It places an order for all the products in the Shopping cart.</p>
     post:
+      summary: POST /api/shoppingcart/{webkey}/checkout
       tags:
         - ShoppingCart
       operationId: ShoppingCart_CheckoutAsync
@@ -1507,6 +1666,12 @@ paths:
           required: true
           type: string
           format: uuid
+          description: The unique ID of each campaign
+        - name: X_CID
+          in: header
+          required: true
+          type: string
+          description: The X_CID of the specific client   
         - name: details
           in: body
           required: true
@@ -1518,7 +1683,11 @@ paths:
           schema:
             $ref: '#/definitions/CheckoutResponse'
   '/api/shoppingcart/{webkey}/confirmpayment':
+    x-summary: Confirm third-party Payments
+    x-description: |
+        <p>This API is used to complete the third party payment providers process. If a customer is paying for shopping cart order using third party payment provider(s) (Paypal, and etc...), customer will be redirected to a third party provider(s) website. After completing the payment process on third party payment provider(s) Website, customer gets redirected to SUCESS URL/Shopping cart website configured in CRM campaign. This API could be used at this point to confirm that customer came back after paying using third party payment provider(s).</p>
     post:
+      summary: POST /api/shoppingcart/{webkey}/confirmpayment
       tags:
         - ShoppingCart
       operationId: ShoppingCart_ConfirmPaymentAsync
@@ -1534,22 +1703,34 @@ paths:
           required: true
           type: string
           format: uuid
+          description: The unique ID of each campaign
+        - name: X_CID
+          in: header
+          required: true
+          type: string
+          description: The X_CID of the specific client
         - name: trackingNumber
           in: query
           required: true
           type: string
+          description: The tracking number
         - name: paymentProvider
           in: query
           required: true
           type: integer
           format: int32
+          description: The payment provider number
       responses:
         '200':
           description: OK
           schema:
             $ref: '#/definitions/ConfirmPaymentResponse'
   '/api/shoppingcart/{webkey}/applycoupon':
+    x-summary: Apply Coupon to Shopping cart
+    x-description: |
+        <p>This API is used to apply the coupon to the products in a Shopping cart. It helps to apply the discounted prices, free shipping or any other coupon deals to the list of products inside Shopping cart. It can only be used once. If a coupon is applied to list of product inside Shopping cart and customer added another product the coupon pricing WON'T be applied to new product added to the Shopping cart.</p>
     post:
+      summary: POST /api/shoppingcart/{webkey}/applycoupon
       tags:
         - ShoppingCart
       operationId: ShoppingCart_ApplyCouponAsync
@@ -1565,11 +1746,18 @@ paths:
           required: true
           type: string
           format: uuid
+          description: The unique ID of each campaign
+        - name: X_CID
+          in: header
+          required: true
+          type: string
+          description: The X_CID of the specific client
         - name: sessionId
           in: query
           required: true
           type: string
           format: uuid
+          description: The session id
         - name: couponCode
           in: query
           required: true
@@ -1580,7 +1768,11 @@ paths:
           schema:
             $ref: '#/definitions/ShoppingCartPublicViewModel'
   '/api/shoppingcart/{webkey}/customers/new':
+    x-summary: Create New Customer
+    x-description: |
+        <p>This API is used to create a new customer. A new customer can be created on any page on the Website. When a new Customer is created using this API and the customers complete the purchase, it will automatically link the Customer to this order.</p>
     post:
+      summary: POST /api/shoppingcart/{webkey}/customers/new
       tags:
         - ShoppingCart
       operationId: ShoppingCart_CreateCustomerAccountAsync
@@ -1601,11 +1793,18 @@ paths:
           required: true
           type: string
           format: uuid
+          description: The unique ID of each campaign
+        - name: X_CID
+          in: header
+          required: true
+          type: string
+          description: The X_CID of the specific client
         - name: sessionId
           in: query
           required: true
           type: string
           format: uuid
+          description: The session id
         - name: details
           in: body
           required: true
@@ -1617,7 +1816,11 @@ paths:
           schema:
             type: object
   '/api/shoppingcart/{webkey}/add':
+    x-summary: Add to existing Shopping cart
+    x-description: |
+        <p>First product on shopping cart is added when a new shopping cart is created. This API is used to add an additional product(s) to an existing Shopping cart.</p>
     post:
+      summary: POST /api/shoppingcart/{webkey}/add
       tags:
         - ShoppingCart
       operationId: ShoppingCart_AddProduct
@@ -1638,11 +1841,18 @@ paths:
           required: true
           type: string
           format: uuid
+          description: The unique ID of each campaign
+        - name: X_CID
+          in: header
+          required: true
+          type: string
+          description: The X_CID of the specific client
         - name: sessionId
           in: query
           required: true
           type: string
           format: uuid
+          description: The session id
         - name: productVM
           in: body
           required: true
@@ -1654,7 +1864,11 @@ paths:
           schema:
             type: object
   '/api/shoppingcart/{webkey}/remove':
+    x-summary: Remove product from Shopping cart
+    x-description: |
+        <p>This API is used to REMOVE ecxisting products from a Shopping cart. If a customer have multiple products added to a Shopping cart and would like to remove one this API can be used to achieve such task. If a customer set the quanity of product in a Shopping cart, this API can be used and remove the respective product from Shopping cart.</p>
     delete:
+      summary: DELETE /api/shoppingcart/{webkey}/remove
       tags:
         - ShoppingCart
       operationId: ShoppingCart_RemoveProduct
@@ -1670,23 +1884,35 @@ paths:
           required: true
           type: string
           format: uuid
+          description: The unique ID of each campaign
+        - name: X_CID
+          in: header
+          required: true
+          type: string
+          description: The X_CID of the specific client
         - name: sessionId
           in: query
           required: true
           type: string
           format: uuid
+          description: The session id
         - name: productId
           in: query
           required: true
           type: integer
           format: int32
+          description: The product id
       responses:
         '200':
           description: OK
           schema:
             type: object
   '/api/shoppingcart/{webkey}/update':
+    x-summary: Update product quantity
+    x-description: |
+        <p>This API is used to update the quantity of a product inside the Shopping cart. Customer can update a product quantity to buy multiple items of same product. Customer can also might change quantity to less items. This API helps to achieve such tasks.</p>
     put:
+      summary: PUT /api/shoppingcart/{webkey}/update
       tags:
         - ShoppingCart
       operationId: ShoppingCart_UpdateQuantity
@@ -1702,28 +1928,43 @@ paths:
           required: true
           type: string
           format: uuid
+          description: The unique ID of each campaign
+        - name: X_CID
+          in: header
+          required: true
+          type: string
+          description: The X_CID of the specific client
         - name: sessionId
           in: query
           required: true
           type: string
           format: uuid
+          description: The session id
         - name: productId
           in: query
           required: true
           type: integer
           format: int32
+          description: The product id
         - name: quantity
           in: query
           required: true
           type: integer
           format: int32
+          description: The quantity
       responses:
         '200':
           description: OK
           schema:
             type: object
   '/api/shoppingcart/{webkey}/shippingmethod':
+    x-summary: Select Shipping Method
+    x-description: |
+        <p>This API is used to get the list of Shipping Methods for a product.</p>
+        <p>List of Shipping Methods can be used to ask customers to select a shipping method for their product(s) delivery.</p>
+        <p>The endpoint is used after customer selected a product, because each product has its own shipping methods configured in CRM campaign settings.</p>
     put:
+      summary: PUT /api/shoppingcart/{webkey}/shippingmethod
       tags:
         - ShoppingCart
       operationId: ShoppingCart_SetShippingMethod
@@ -1739,25 +1980,35 @@ paths:
           required: true
           type: string
           format: uuid
+          description: The unique ID of each campaign
+        - name: X_CID
+          in: header
+          required: true
+          type: string
+          description: The X_CID of the specific client
         - name: sessionId
           in: query
           required: true
           type: string
           format: uuid
+          description: The session id
         - name: productId
           in: query
           required: true
           type: integer
           format: int32
+          description: The product id
         - name: shippingMethodId
           in: query
           required: true
           type: integer
           format: int32
+          description: The shipping method id
         - name: keepProductPrice
           in: query
           required: false
           type: boolean
+          description: Keep Product Price or not
       responses:
         '200':
           description: OK
@@ -1782,39 +2033,55 @@ definitions:
     properties:
       firstName:
         type: string
+        description: The first name
       lastName:
         type: string
+        description: The last name
       middleName:
         type: string
+        description: The middle name
       email:
         type: string
+        description: The email address
       address1:
         type: string
+        description: The address 1
       address2:
         type: string
+        description: The address 2
       city:
         type: string
+        description: The city of the address
       zipCode:
         type: string
+        description: The zip code of the address
       state:
         type: string
+        description: The state of the address
       country:
         type: string
+        description: The country of the address
   PlaceOrderSuggestedAddressResponseViewModel:
     type: object
     properties:
       address1:
         type: string
+        description: The address 1
       state:
         type: string
+        description: The address 2
       city:
         type: string
+        description: The city of the address
       zipCode:
         type: string
+        description: The zip code of the address
       countryName:
         type: string
+        description: The country name of the address
       countryCode:
         type: string
+        description: The country code of the address
   CallbackOnpex:
     type: object
     properties:
@@ -1964,10 +2231,13 @@ definitions:
       campaignId:
         format: int32
         type: integer
+        description: The campaign id
       campaignName:
         type: string
+        description: The campaign name
       defaultLanguageCode:
         type: string
+        description: The default language code
   CampaignCustomFieldViewModel:
     type: object
     properties:
@@ -1980,14 +2250,19 @@ definitions:
     properties:
       countryName:
         type: string
+        description: The country name
       countryCode:
         type: string
+        description: The country code
       currencyCode:
         type: string
+        description: The currency code
       currencyName:
         type: string
+        description: The courrency name
       currencySign:
         type: string
+        description: The currency symbol
   CampaignCountryStateViewModel:
     type: object
     properties:
@@ -2005,31 +2280,37 @@ definitions:
     properties:
       firstName:
         type: string
-        description: user firstname
+        description: The first name
       lastName:
         type: string
+        description: The last name
       email:
         type: string
-        description: email address
+        description: The email address
       phoneNumber:
         type: string
+        description: The phone number
       skype:
         type: string
+        description: The skype id
   CampaignUpsellItemViewModel:
     type: object
     properties:
       id:
         format: int32
         type: integer
+        description: Campaign id
       index:
         format: int32
         type: integer
       webKey:
         format: uuid
         type: string
+        description: Campaign webkey
         example: 00000000-0000-0000-0000-000000000000
       url:
         type: string
+        description: Campaign url
   XElement:
     type: object
     properties:
@@ -2304,66 +2585,92 @@ definitions:
     properties:
       discountBehavior:
         type: string
+        description: The discount behavior
       discountType:
         type: string
+        description: The discount type
       discount:
         format: double
         type: number
+        description: The discount applied
       formattedDiscount:
         type: string
+        description: The discount applied in local currency
       minimalPurchase:
         format: double
         type: number
+        description: The minimal purchase
       formattedMinimalPurchase:
         type: string
+        description: The minimal purchase in local currency
       isFreeShipping:
         type: boolean
+        description: Is free shipping or not
   CampaignCouponCalculatedViewModel:
     type: object
     properties:
       totalDiscountedPrice:
         format: double
         type: number
+        description: The total of discounted price
       formattedTotalDiscountedPrice:
         type: string
+        description: The total of discounted price in local currency
       totalDiscountedShippingPrice:
         format: double
         type: number
+        description: The total of discounted shipping price
       formattedTotalDiscountedShippingPrice:
         type: string
+        description: The total of discounted price in local currency
       freeShipping:
         type: boolean
+        description: Is free shipping or not
   ExportCustomerViewModel:
     type: object
     properties:
       firstName:
         type: string
+        description: The first name
       middleName:
         type: string
+        description: The middle name
       lastName:
         type: string
+        description: The last name
       email:
         type: string
+        description: The email address
       address1:
         type: string
+        description: The address 1
       address2:
         type: string
+        description: The address 2
       city:
         type: string
+        description: The city of the address
       zipCode:
         type: string
+        description: The zip code of the address
       state:
         type: string
+        description: The state of the address
       countryCode:
         type: string
+        description: The country code of the address
       countryName:
         type: string
+        description: The country name of the address
       phoneNumber:
         type: string
+        description: The phone number
       ip:
         type: string
+        description: The ip address
       campaignName:
         type: string
+        description: The campaign name
   CustomerViewModel:
     type: object
     properties:
@@ -2393,26 +2700,37 @@ definitions:
         type: integer
       firstName:
         type: string
+        description: The first name
       middleName:
         type: string
+        description: The middle name
       lastName:
         type: string
+        description: The last name
       address1:
         type: string
+        description: The address 1
       address2:
         type: string
+        description: The address 2
       city:
         type: string
+        description: The city of the address
       zipCode:
         type: string
+        description: The zip code of the address
       state:
         type: string
+        description: The state of the address
       countryCode:
         type: string
+        description: The country code of the address
       countryName:
         type: string
+        description: The country name of the address
       phoneNumber:
         type: string
+        description: The phone number
   CustomerAddressOrderSaveViewModel:
     required:
       - orderNumbers
@@ -2422,13 +2740,17 @@ definitions:
     properties:
       verifiedByCustomer:
         type: boolean
+        description: Is verified by Customer
       customerIdentificationTypeId:
         format: int32
         type: integer
+        description: Customer's identification type id
       customerIdentificationValue:
         type: string
+        description: The value of customer's identification
       newCustomerEmail:
         type: string
+        description: New Customer email address
       orderNumbers:
         type: array
         items:
@@ -2448,41 +2770,57 @@ definitions:
     properties:
       firstName:
         type: string
+        description: The first name of customer
       middleName:
         type: string
+        description: The middle name of customer
       lastName:
         type: string
+        description: The last name of customer
       address1:
         type: string
+        description: Customer's address 1
       address2:
         type: string
+        description: Customer's address 2
       city:
         type: string
+        description: The city of the address
       zipCode:
         type: string
+        description: The zip code of the address
       state:
         type: string
+        description: The state of the address
       countryCode:
         type: string
+        description: The country code of the address
       phoneNumber:
         type: string
+        description: Customer's phone number 
   CustomerReturnViewModel:
     type: object
     properties:
       id:
         format: int32
         type: integer
+        description: Customer id
       email:
         type: string
+        description: Customer's email address
       customerIdentificationTypeId:
         format: int32
         type: integer
+        description: Customer identification type
       customerIdentificationValue:
         type: string
+        description: Customer idfentification value
       isVerifiedAddress:
         type: boolean
+        description: Is the address verified or not
       isVerifiedByCustomer:
         type: boolean
+        description: Is the address verified by customer
       shippingAddress:
         $ref: '#/definitions/CustomerReturnAddressViewModel'
       billingAddress:
@@ -2495,45 +2833,64 @@ definitions:
       id:
         format: int32
         type: integer
+        description: Return address id
       firstName:
         type: string
+        description: Customer's first name
       middleName:
         type: string
+        description: Customer's middle name
       lastName:
         type: string
+        description: Customer's last name
       address1:
         type: string
+        description: Customer's address 1
       address2:
         type: string
+        description: Customer's address 2
       city:
         type: string
+        description: The city of the address
       zipCode:
         type: string
+        description: The zip code of the address
       state:
         type: string
+        description: The state of the address
       countryCode:
         type: string
+        description: The country code of the address
       countryName:
         type: string
+        description: The country name of the address
       phoneNumber:
         type: string
+        description: Customer's phone number
       isVerified:
         type: boolean
+        description: Is the address verified
   CustomerReturnSuggestedAddressViewModel:
     type: object
     properties:
       address1:
         type: string
+        description: Customer's suggested address 1
       city:
         type: string
+        description: The suggested city of the address
       zipCode:
         type: string
+        description: The suggested zip code of the address
       state:
         type: string
+        description: The suggested state of the address
       countryCode:
         type: string
+        description: The suggested country code of the address
       countryName:
         type: string
+        description: The suggested country name
   CustomerSaveViewModel:
     required:
       - email
@@ -2543,15 +2900,20 @@ definitions:
     properties:
       email:
         type: string
+        description: Customer's email address
       phoneNumber:
         type: string
+        description: Customer's phone number
       customerIdentificationTypeId:
         format: int32
         type: integer
+        description: Customer's identification type
       customerIdentificationValue:
         type: string
+        description: Customer's identification value
       useShippingAddressForBilling:
         type: boolean
+        description: If use shipping address for billing
       shippingAddress:
         $ref: '#/definitions/CustomerAddressSaveViewModel'
       billingAddress:
@@ -2563,16 +2925,22 @@ definitions:
     properties:
       referringUrl:
         type: string
+        description: The referring URL
       landingUrl:
         type: string
+        description: The landing URL
       browser:
         type: string
+        description: The browser versioin
       os:
         type: string
+        description: The OS version
       screenResolution:
         type: string
+        description: The screen resolution
       device:
         type: string
+        description: The device type
   CustomerAddressUpdateViewModel:
     required:
       - email
@@ -2582,9 +2950,11 @@ definitions:
     properties:
       email:
         type: string
+        description: Customer's email address
       addressId:
         format: int32
         type: integer
+        description: Customer's address id
       shippingAddress:
         $ref: '#/definitions/CustomerAddressSaveViewModel'
   CustomerUpdateReturnViewModel:
@@ -2599,18 +2969,25 @@ definitions:
     properties:
       countryCode:
         type: string
+        description: The country code of customer's locatoin
       countryName:
         type: string
+        description: The country name of customer's location 
       regionCode:
         type: string
+        description: The region code of customer's location
       regionName:
         type: string
+        description: The region name of customer's location
       city:
         type: string
+        description: The city of customer's location
       zipCode:
         type: string
+        description: The zip code of customer's location
       currencyCode:
         type: string
+        description: The currency code of customer's location
   CustomerPwd:
     type: object
     properties:
@@ -2618,13 +2995,17 @@ definitions:
         format: uuid
         type: string
         example: 00000000-0000-0000-0000-000000000000
+        description: The unique ID of each campaign
       id:
         format: int32
         type: integer
+        description: Customer id
       email:
         type: string
+        description: Customer's email address
       password:
         type: string
+        description: Customer's password
       repeat:
         type: string
   CustomerBillingData:
@@ -2633,56 +3014,79 @@ definitions:
       customerId:
         format: int32
         type: integer
+        description: Customer id
       orderId:
         format: int32
         type: integer
+        description: The order id
       countryCode:
         type: string
+        description: The country code
       state:
         type: string
+        description: The billing State
       city:
         type: string
+        description: The billing City
       address1:
         type: string
+        description: The billing address 1
       address2:
         type: string
+        description: The billing address 2
       zipCode:
         type: string
+        description: The billing zip code
       clientIP:
         type: string
+        description: Customer's ip address
       email:
         type: string
+        description: Customer's email address
       phone:
         type: string
+        description: Customer's phone number
       cardNumber:
         type: string
+        description: The credit card number
       cardId:
         type: string
+        description: The credit card ID
       cardBrand:
         type: string
+        description: The credit card brand (VISA, Master...)
       lastDigits:
         type: string
+        description: The last digits of credit card
       holdersName:
         type: string
+        description: The name of card's owner
       expiryDate:
         type: string
+        description: The card expiration date
       cvv:
         type: string
+        description: The CVV number
       createdOn:
         format: date-time
         type: string
+        description: The bill date.
   FraudAnalysisTransaction:
     type: object
     properties:
       campaignId:
         format: int32
         type: integer
+        description: The campaign id
       emailAddress:
         type: string
+        description: The email address
       ip:
         type: string
+        description: The ip address
       creditCardCountryCode:
         type: string
+        description: The country code of credit card
       address:
         $ref: '#/definitions/CustomerAddressViewModel'
       creditCard:
@@ -2702,26 +3106,37 @@ definitions:
         type: integer
       firstName:
         type: string
+        description: The first name
       middleName:
         type: string
+        description: The middle name
       lastName:
         type: string
+        description: The last name
       address1:
         type: string
+        description: The address field 1
       address2:
         type: string
+        description: The address field 2
       city:
         type: string
+        description: The city of the address
       state:
         type: string
+        description: The state of the address
       countryCode:
         type: string
+        description: The country code of the address
       countryName:
         type: string
+        description: The country name of the address
       zipCode:
         type: string
+        description: The zip code of the address
       phoneNumber:
         type: string
+        description: The phone number of the address
   CreditCardViewModel:
     required:
       - cardNumber
@@ -2730,15 +3145,20 @@ definitions:
     properties:
       cardNumber:
         type: string
+        description: The card number
       expirationDate:
         pattern: '[0-9]{2}/[0-9]{4}'
         type: string
+        description: The expiration date
       cvv:
         type: string
+        description: The CVV number
       reportedCard:
         type: boolean
+        description: Has the card being reported
       paymentProcessor:
         type: string
+        description: The payment processor
   FraudAnalysisResponse:
     type: object
     properties:
@@ -2757,16 +3177,21 @@ definitions:
     properties:
       couponCode:
         type: string
+        description: The coupon code
       shippingMethodId:
         format: int32
         type: integer
+        description: The shipping method id
       comment:
         type: string
+        description: The comment for the order
       useShippingAddressForBilling:
         type: boolean
+        description: Set ture if using shipping address for billing
       productId:
         format: int32
         type: integer
+        description: The product id
       campaignUpsell:
         $ref: '#/definitions/PlaceOrderUpSellSaveViewModel'
       miniUpsell:
@@ -2798,18 +3223,22 @@ definitions:
       webKey:
         format: uuid
         type: string
+        description: The unique id of each campaign
         example: 00000000-0000-0000-0000-000000000000
       relatedOrderNumber:
         type: string
+        description: The order number of related order
   PlaceOrderMiniUpSellSaveViewModel:
     type: object
     properties:
       productId:
         format: int32
         type: integer
+        description: The product id
       shippingMethodId:
         format: int32
         type: integer
+        description: the shipping method id
   PlaceOrderCustomerSaveViewModel:
     required:
       - email
@@ -2825,18 +3254,25 @@ definitions:
         type: string
       email:
         type: string
+        description: The email address
       phoneNumber:
         type: string
+        description: The phone number
       firstName:
         type: string
+        description: The first name
       middleName:
         type: string
+        description: The middle name
       lastName:
         type: string
+        description: The last name
       ip:
         type: string
+        description: The ip address
       password:
         type: string
+        description: The password
       salt:
         type: string
   PlaceOrderMidSaveViewModel:
@@ -2850,9 +3286,11 @@ definitions:
       midId:
         format: int32
         type: integer
+        description: The Merchant identification number
       paymentProcessorId:
         format: int32
         type: integer
+        description: The payment processor id
       prnCode:
         type: string
       purchaseToken:
@@ -2863,25 +3301,33 @@ definitions:
       paymentProcessorId:
         format: int32
         type: integer
+        description: Th epayment processor id
       instalments:
         format: int32
         type: integer
+        description: The number of instalments
       cardgatePaymentMethodId:
         format: int32
         type: integer
+        description: The 
       cardgatePaymentIssuerId:
         format: int32
         type: integer
       name:
         type: string
+        description: The name for the payment
       creditCard:
         type: string
+        description: The credit card number
       expiration:
         type: string
+        description: The expiration date
       cvv:
         type: string
+        description: The CVV number
       creditCardBrand:
         type: string
+        description: The credit card brand (VISA, Master..)
       cardId:
         format: uuid
         type: string
