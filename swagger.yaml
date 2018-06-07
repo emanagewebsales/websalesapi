@@ -74,25 +74,27 @@ info:
     </table>
     
         
-    #Quickstart
+    #To Get Started
     
     <hr/>
 
       <strong>Some important things to have in mind before starting any integration!<br> Before starting any integration, please make sure to have: </strong>
       
       <ul>
-        <li><strong>X_CID: </strong>That will be your client key. As soon as a new client onboard in eManageCRM, they will receive this key with their instance package. That is required to be added in the header of every call in the <strong>Sales API</strong>.</li>
+        <li><strong>X_CID: </strong>This will be your client key. As soon as a new client onboard in eManageCRM, they will receive this key with their instance package. This is required to be added in the header of every call in the <strong>Sales API</strong>.</li>
         <li><strong>Campaign WebKey: </strong>For each new campaign, a new webkey will be generated. You will constantly see that information being requested in our APIs. That will be the campaign key used to connect the offer website to our CRM.<br><img src='https://s3.amazonaws.com/emanage-analytics/webkey.png' alt='api_browser_schema'  /></li>
       </ul>
       
       
       In order to have <strong>Sales API</strong> working adequately, the campaign being used must be configured with status <strong>'Active with Traffic'</strong>. 
-      Considering that you already have that, please follow bellow the steps that are mandatory:
+      Considering that you have that ready, you may continue with bellow steps that are considered mandatory or important:
       <ul>
         <li><strong>Get the customer location: </strong>This step <strong>is not</strong> mandatory, however it allows you to get the customer geolocation. In case that you are setting the prices based on their location, it is <strong>very important</strong> to use this GET method. In case that there is no relevance, you could simply ignore this method, and consider the prices from the location desired for your offer.</li>
         <li><strong>Get countries set up in the campaign: </strong>That is a important step from our flow. This API GET method will bring you a list with all countries configured for that specific campaign with all the particularities from the currency (sign, name and code).</li>
         <li><strong>Place a new order: </strong>That is the main API call. Once you gatter all information, you will use the Place Order method to input all that data and process the payment from that order.</li>
       </ul>
+      
+      <b>Below is the flowchart for you to have a quick idea on how general call flow should be:</b>
       
     <table>
     <tr>
@@ -115,16 +117,18 @@ info:
     </tr>
     </table>
 
-   
+    <b>As now you should have a brief idea on how the eManage Sales API works, now you may proceed to the REFERENCE sections to explore all the funtions and endpoints provided.</b>
+    <br>
+    <p style="text-align:center;">Last Updated - 2018/06/05</p>
 
 host: sales-prod.tryemanagecrm.com
 tags:
   - name: Campaigns
-    description: Retrieves basic campaign information, such as campaign name and default language code. It can be useful at a development stage to find a campaign based on a webkey. Since there can be multiple websites in development simultaneously, there should be an easy way to determine what campaign is being currently used at a specific website. This information shouldn't be revealed to the customer but can be displayed in the console during development.
+    description: Everything related to Campaigns in CRM, including the setting information, custom fields, countries list, States/Provinces, Upsells and other more.
   - name: Coupons
-    description: Information regarding to Coupon, cupoon creation and calculate coupon code.
+    description: Everything with Coupons, including Coupon information, how you apply coupons to the calculation and more.
   - name: Customers
-    description: Customers, Shipping Address, Customer location, Sign-in, Billing informations
+    description: All the information you need regarding to Customers. From basic information retrieval and update, shipping related information, location, billing and beyond.
   - name: Orders
     description: Orders information, order number, invoice, last orders, related orders, orders by customer.
   - name: Payments
