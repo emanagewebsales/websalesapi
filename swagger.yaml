@@ -601,6 +601,11 @@ paths:
           required: true
           type: string
           description: Customer's email address
+        - name: X_CID
+          in: header
+          required: true
+          type: string
+          description: The X_CID of the specific client
       responses:
         '200':
           description: OK
@@ -713,6 +718,11 @@ paths:
         - application/xml
         - text/xml
       parameters:
+        - name: X_CID
+          in: header
+          required: true
+          type: string
+          description: The X_CID of the specific client
         - name: model
           in: body
           required: true
@@ -776,6 +786,11 @@ paths:
         - application/xml
         - text/xml
       parameters:
+        - name: X_CID
+          in: header
+          required: true
+          type: string
+          description: The X_CID of the specific client
         - name: customer
           in: body
           required: true
@@ -807,6 +822,11 @@ paths:
         - application/xml
         - text/xml
       parameters:
+        - name: X_CID
+          in: header
+          required: true
+          type: string
+          description: The X_CID of the specific client
         - name: customer
           in: body
           required: true
@@ -838,6 +858,11 @@ paths:
         - application/xml
         - text/xml
       parameters:
+        - name: X_CID
+          in: header
+          required: true
+          type: string
+          description: The X_CID of the specific client
         - name: data
           in: body
           required: true
@@ -959,8 +984,9 @@ paths:
     x-description: |
       <p>The place order API is responsible for sending orders to the CRM platform. </p>
       <p>This endpoint uses data filled by the customer, selected products and analytics. This endpoint will be used to place the main order with the funnel and miniupsell, as well as upsell orders. </p>
+      <p>You can either use PUT to confirm payment for the products purchase using third-party payment providers, or POST to Place order/Purchase products.</p>
     put:
-      summary: PUT /api/orders/{webkey}   (confirm payment for the products purchase using third-party payment providers.)
+      summary: PUT /api/orders/{webkey}
       tags:
         - Orders
       operationId: Orders_Put
@@ -1008,7 +1034,7 @@ paths:
           schema:
             $ref: '#/definitions/PlaceOrderUpdateReturnViewModel'
     post:
-      summary: POST /api/orders/{webkey}   (Place order/Purchase product)
+      summary: POST /api/orders/{webkey}
       tags:
         - Orders
       operationId: Orders_Post
@@ -1072,6 +1098,11 @@ paths:
         - application/xml
         - text/xml
       parameters:
+        - name: X_CID
+          in: header
+          required: true
+          type: string
+          description: The X_CID of the specific client
         - name: orderNumber
           in: path
           required: true
@@ -1098,6 +1129,11 @@ paths:
         - application/xml
         - text/xml
       parameters:
+        - name: X_CID
+          in: header
+          required: true
+          type: string
+          description: The X_CID of the specific client
         - name: orderNumber
           in: path
           required: true
@@ -1121,6 +1157,11 @@ paths:
         - application/xml
         - text/xml
       parameters:
+        - name: X_CID
+          in: header
+          required: true
+          type: string
+          description: The X_CID of the specific client
         - name: orderNumber
           in: path
           required: true
@@ -1212,6 +1253,11 @@ paths:
         - application/xml
         - text/xml
       parameters:
+        - name: X_CID
+          in: header
+          required: true
+          type: string
+          description: The X_CID of the specific client
         - name: orderNumber
           in: path
           required: true
@@ -1257,6 +1303,9 @@ paths:
           schema:
             $ref: '#/definitions/CustomerOrdersModel'
   '/api/payments/transactions/{orderNumber}':
+    x-summary: Get Transaction information
+    x-description: |
+        To provide the whole transaction infomraiton from the main order.
     get:
       summary: GET /api/payments/transactions/{orderNumber}
       tags:
@@ -1269,6 +1318,11 @@ paths:
         - application/xml
         - text/xml
       parameters:
+        - name: X_CID
+          in: header
+          required: true
+          type: string
+          description: The X_CID of the specific client
         - name: orderNumber
           in: path
           required: true
